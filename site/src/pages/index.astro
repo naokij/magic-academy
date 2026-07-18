@@ -1,3 +1,18 @@
 ---
-return Astro.redirect('/home', 302);
+import Base from '~/layouts/Base.astro';
 ---
+<Base title="魔法学院 · 睡前有声绘本" active="home">
+  <section class="fade-in" style="text-align: center; padding: 80px 24px;">
+    <span class="eyebrow">MAGIC ACADEMY</span>
+    <h1 style="margin-top: 12px; margin-bottom: 16px; font-size: clamp(36px, 4.5vw, 56px);">魔法学院</h1>
+    <p class="text-muted" style="max-width: 56ch; margin: 0 auto 24px; font-size: 17px; line-height: 1.7;">
+      6 岁小橘子口述的睡前有声绘本系列。晶晶和亮亮在魔法学院学魔法、交朋友、慢慢长大的故事。
+    </p>
+    <div class="row" style="justify-content: center; margin-top: 24px;">
+      <a class="btn btn-primary" href="/home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4 L20 12 L7 20 Z"/></svg>
+        进入魔法学院
+      </a>
+    </div>
+  </section>
+</Base>
