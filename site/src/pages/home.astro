@@ -162,7 +162,7 @@ const scenePreviewList = [
     <div class="grid grid-3">
       {featuredChars.map((c, i) => (
         <a class={`card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`} href={`/characters#char-${c.id}`} data-od-id={`card-${c.id}`}>
-          <CharacterPortrait portrait={c.portrait} name={c.name} loading="eager" />
+          <CharacterPortrait portrait={c.portrait} name={c.name} loading="eager" className="card-img" />
           <div class="card-body">
             <div class="row" style="margin-bottom: 6px;">
               <span class="chip" style={`background: var(--c-${c.color}); color: oklch(20% 0.04 80); border-color: oklch(60% 0.10 80);`}>{c.age}</span>

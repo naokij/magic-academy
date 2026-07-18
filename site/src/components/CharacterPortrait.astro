@@ -5,9 +5,10 @@ interface Props {
   portrait: string;
   name: string;
   loading?: 'eager' | 'lazy';
+  className?: string;
 }
 
-const { portrait, name, loading = 'lazy' } = Astro.props;
+const { portrait, name, loading = 'lazy', className } = Astro.props;
 const stem = portrait.replace(/\.(jpg|png)$/i, '');
 const ext = portrait.match(/\.(jpg|png)$/i)?.[0] || '.png';
 const isPng = ext === '.png';
@@ -31,6 +32,7 @@ const webpSrcset = widths
     alt={name}
     loading={loading}
     decoding="async"
+    class={className}
     style={isPng ? 'background: oklch(99% 0.005 85);' : undefined}
   />
 </picture>
