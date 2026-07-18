@@ -1,0 +1,37 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+site/dist/
+site/.astro/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Sync-generated 资源(scripts/sync-assets.sh 自动从仓库根拷到 site/public/)
+site/public/assets/
+site/public/audio/
+site/public/logo/
+site/public/fonts/
+
+# ZCode
+.zcode/
+.playwright-cli/
+
+# wrangler
+.wrangler/

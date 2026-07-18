@@ -1,0 +1,226 @@
+---
+import Base from '~/layouts/Base.astro';
+import CharacterPortrait from '~/components/CharacterPortrait.astro';
+import { characters, type CharacterRole } from '~/data/characters';
+import { episodes } from '~/data/episodes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+// pill 标签(带 N 计数)
+const counts: Record<CharacterRole | 'all', number> = {
+  all: characters.length,
+  主角: characters.filter(c => c.role === '主角').length,
+  优等生: characters.filter(c => c.role === '优等生').length,
+  同学: characters.filter(c => c.role === '同学').length,
+  老师: characters.filter(c => c.role === '老师').length,
+  守护者: characters.filter(c => c.role === '守护者').length,
+};
+
+const roles: { key: CharacterRole | 'all'; label: string }[] = [
+  { key: 'all', label: `全部 · ${counts.all}` },
+  { key: '主角', label: `主角 · ${counts['主角']}` },
+  { key: '优等生', label: `优等生 · ${counts['优等生']}` },
+  { key: '同学', label: `同学 · ${counts['同学']}` },
+  { key: '老师', label: `老师 · ${counts['老师']}` },
+  { key: '守护者', label: `守护者 · ${counts['守护者']}` },
+];
+
+// 出场集反查
+const epsByCharId: Record<string, { slug: string; title: string; number: number }[]> = {};
+for (const c of characters) {
+  epsByCharId[c.id] = episodes
+    .filter((ep) => ep.charactersInScene.includes(c.id) && ep.status === 'online')
+    .map((ep) => ({ slug: ep.slug, title: ep.title, number: ep.number }));
+}
+
+const bannerStem = '/assets/banners/人物图鉴横版v2';
+---
+<Base title="人物图鉴 · 魔法学院" active="characters">
+  <!-- 人物图鉴 Banner -->
+  <section data-od-id="page-hero" style="margin-bottom: 32px;">
+    <div class="card fade-in" style="padding: 0; overflow: hidden;">
+      <div style="aspect-ratio: 16/9; overflow: hidden; position: relative; background: oklch(88% 0.05 305);">
+        <img
+          src={assetUrl('/assets/banners/人物图鉴横版v2.jpg')}
+          srcset={assetSrcset(`${bannerStem}-800.jpg 800w, ${bannerStem}-1600.jpg 1600w, /assets/banners/人物图鉴横版v2.jpg 2048w`)}
+          sizes="(max-width: 720px) 90vw, 1280px"
+          alt="人物图鉴 banner · 24 位角色合影"
+          style="width: 100%; height: 100%; object-fit: cover; display: block;"
+        />
+        <span class="sparkle" style="top: 12%; left: 8%; width: 14px; height: 14px; color: oklch(95% 0.10 85);">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+        <span class="sparkle s2" style="top: 28%; right: 14%; width: 12px; height: 12px;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+        <span class="sparkle s3" style="bottom: 16%; left: 18%; width: 10px; height: 10px;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+      </div>
+      <div class="card-body" style="padding: 22px 28px 24px; text-align: center;">
+        <span class="eyebrow">人物图鉴 · 完整版</span>
+        <h1 style="margin-top: 8px; font-size: 30px; letter-spacing: 0.02em;">{characters.length} 位住在魔法学院的人</h1>
+        <p class="text-muted" style="margin-top: 8px; font-size: 14px; max-width: 56ch; margin-left: auto; margin-right: auto;">
+          主角、同学、老师、四位守护者 — 点击卡片看详细介绍
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="char-filter" data-od-id="filter" id="filter-root">
+    {roles.map((r, i) => (
+      <button class={`pill ${i === 0 ? 'is-active' : ''}`} data-filter={r.key}>{r.label}</button>
+    ))}
+  </section>
+
+  <section data-od-id="character-grid">
+    <div class="grid grid-auto" id="char-grid">
+      {characters.map((c) => (
+        <article
+          class="character-card fade-in"
+          id={`char-${c.id}`}
+          data-role={c.tags.join(' ')}
+          data-name={c.name}
+          data-role-label={c.roleLabel}
+          data-age={c.age}
+          data-power={c.power}
+          data-bio={c.bio}
+          data-portrait={c.portrait}
+          data-color={c.color}
+          data-appearances={JSON.stringify(epsByCharId[c.id] || [])}
+          style={`--card-color: var(--c-${c.color});`}
+        >
+          <div class="char-img">
+            <CharacterPortrait portrait={c.portrait} name={c.name} />
+            <span class="char-tag" style={`background: var(--c-${c.color});`}>{c.role}</span>
+          </div>
+          <div class="char-body">
+            <div class="char-name">{c.name}</div>
+            <div class="char-role">{c.age} · {c.power}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- 页尾装饰分隔符 · 撑满视口宽度 -->
+  <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <!-- 角色详情弹窗 -->
+  <div class="modal-backdrop" id="char-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+      <button class="modal-close" id="modal-close" aria-label="关闭">×</button>
+      <div class="modal-grid">
+        <div class="modal-img">
+          <img id="modal-portrait" alt="" />
+        </div>
+        <div class="modal-body">
+          <span class="eyebrow" id="modal-role-label"></span>
+          <h2 class="modal-name" id="modal-name"></h2>
+          <p class="modal-meta" id="modal-age"></p>
+          <div class="modal-power">
+            <span class="chip chip-accent" id="modal-power"></span>
+          </div>
+          <p class="modal-bio" id="modal-bio"></p>
+          <div class="modal-appearances" id="modal-appearances"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script define:vars={{ characters: characters.map(c => ({ id: c.id, color: c.color })) }}>
+    // 角色筛选
+    const filterRoot = document.getElementById('filter-root');
+    const grid = document.getElementById('char-grid');
+    if (filterRoot && grid) {
+      const pills = filterRoot.querySelectorAll('.pill');
+      const cards = grid.querySelectorAll('.character-card');
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          pills.forEach((p) => p.classList.remove('is-active'));
+          pill.classList.add('is-active');
+          const filter = pill.getAttribute('data-filter') || 'all';
+          cards.forEach((card) => {
+            const role = card.getAttribute('data-role') || '';
+            if (filter === 'all' || role.includes(filter)) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
+
+    // 角色详情弹窗
+    const modal = document.getElementById('char-modal');
+    const modalClose = document.getElementById('modal-close');
+    const modalName = document.getElementById('modal-name');
+    const modalRoleLabel = document.getElementById('modal-role-label');
+    const modalAge = document.getElementById('modal-age');
+    const modalPower = document.getElementById('modal-power');
+    const modalBio = document.getElementById('modal-bio');
+    const modalPortrait = document.getElementById('modal-portrait');
+    const modalAppearances = document.getElementById('modal-appearances');
+
+    function openModal(card) {
+      const name = card.getAttribute('data-name') || '';
+      const roleLabel = card.getAttribute('data-role-label') || '';
+      const age = card.getAttribute('data-age') || '';
+      const power = card.getAttribute('data-power') || '';
+      const bio = card.getAttribute('data-bio') || '';
+      const portrait = card.getAttribute('data-portrait') || '';
+      const appearances = JSON.parse(card.getAttribute('data-appearances') || '[]');
+
+      if (modalName) modalName.textContent = name;
+      if (modalRoleLabel) modalRoleLabel.textContent = roleLabel;
+      if (modalAge) modalAge.textContent = age;
+      if (modalPower) modalPower.textContent = power;
+      if (modalBio) modalBio.textContent = bio;
+      if (modalPortrait) {
+        modalPortrait.src = portrait;
+        modalPortrait.alt = name;
+      }
+      if (modalAppearances) {
+        if (appearances.length === 0) {
+          modalAppearances.innerHTML = '<p class="text-muted" style="font-size: 14px;">尚未在任何已上线剧集登场</p>';
+        } else {
+          modalAppearances.innerHTML =
+            '<p class="eyebrow" style="margin-top: 16px; margin-bottom: 8px;">出场剧集</p>' +
+            '<div class="row">' +
+            appearances.map((a) => `<a class="chip" href="/story/${a.slug}">EP.${String(a.number).padStart(2, '0')} · ${a.title}</a>`).join('') +
+            '</div>';
+        }
+      }
+      if (modal) {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    if (grid) {
+      grid.querySelectorAll('.character-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal(card);
+        });
+      });
+    }
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</Base>

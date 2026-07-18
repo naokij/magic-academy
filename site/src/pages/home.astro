@@ -1,0 +1,194 @@
+---
+import Base from '~/layouts/Base.astro';
+import { episodes, onlineEpisodes, getEpisodeBySlug } from '~/data/episodes';
+import { characters } from '~/data/characters';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+const latest = onlineEpisodes[onlineEpisodes.length - 1] || getEpisodeBySlug('1-开学第一天')!;
+const coverStem = latest.cover.replace(/\.jpg$/i, '');
+
+// 主角三人(原型指定:晶晶 / 亮亮 / 小包子老师)
+const featuredChars = characters.filter((c) => ['jingjing', 'liangliang', 'xiaobaozi'].includes(c.id));
+
+// 3 个场景预览
+const scenePreviewList = [
+  { name: '城堡全景', img: '/assets/locations/城堡全景.jpg', desc: '魔法学院的城堡,普通人以为是普通房子。' },
+  { name: '食堂', img: '/assets/locations/食堂.jpg', desc: '影子漂浮,可以自动选麦片粥。' },
+  { name: '花园', img: '/assets/locations/花园.jpg', desc: '阳光下练习魔法的地方。' },
+];
+---
+<Base title="首页 · 魔法学院" active="home">
+  <!-- Hero · 全宽 cinematic · 纯图 -->
+  <section data-od-id="hero" style="margin-bottom: 64px;">
+    <div class="hero-cinema fade-in">
+      <div class="hero-bg">
+        <img src={assetUrl('/assets/banners/城堡玩耍.jpg')} alt="魔法学院城堡 · 梦幻黄昏全景" />
+      </div>
+      <span class="sparkle" style="top: 14%; left: 8%; width: 14px; height: 14px;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+      </span>
+      <span class="sparkle s2" style="top: 22%; left: 32%; width: 10px; height: 10px;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+      </span>
+      <span class="sparkle s3" style="top: 36%; right: 22%; width: 12px; height: 12px;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+      </span>
+      <span class="sparkle s4" style="top: 60%; right: 8%; width: 16px; height: 16px;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+      </span>
+      <span class="sparkle s2" style="top: 78%; left: 14%; width: 10px; height: 10px;">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+      </span>
+    </div>
+  </section>
+
+  <!-- 最新一集 · editorial 版式 -->
+  <section data-od-id="latest-episode" style="margin-bottom: 64px;">
+    <div class="row" style="justify-content: space-between; align-items: end; margin-bottom: 24px;">
+      <div>
+        <span class="eyebrow">最新一集</span>
+        <h2 style="margin-top: 8px;">{latest.title}</h2>
+      </div>
+      <a class="btn btn-ghost" href="/story-list">所有故事 →</a>
+    </div>
+
+    <div class="card latest-episode-card">
+      <div class="latest-episode-layout">
+        <!-- 左:方形封面 -->
+        <div style="position: relative; aspect-ratio: 1/1; overflow: hidden;">
+          <img
+            src={assetUrl(latest.cover)}
+            srcset={assetSrcset(`${coverStem}-400.jpg 400w, ${coverStem}-800.jpg 800w, ${coverStem}-1200.jpg 1200w, ${latest.cover} 2048w`)}
+            sizes="(max-width: 720px) 90vw, 360px"
+            alt={latest.title + '封面'}
+            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
+          />
+          <span class="sparkle" style="top: 12%; left: 18%; width: 12px; height: 12px;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+          </span>
+          <span class="sparkle s3" style="top: 60%; left: 35%; width: 10px; height: 10px;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+          </span>
+        </div>
+
+        <!-- 右:ep 信息 -->
+        <div class="latest-episode-body">
+          <div class="row" style="margin-bottom: 16px;">
+            <span class="chip chip-accent">EP.{String(latest.number).padStart(2, '0')}</span>
+            <span class="chip">{latest.duration}</span>
+            <span class="chip">已上线</span>
+          </div>
+
+          <p class="text-muted" style="font-size: 17px; line-height: 1.7; max-width: 50ch;">
+            {latest.excerpt}
+          </p>
+
+          <div class="row" style="margin-top: 22px;">
+            <a class="btn btn-primary" href={`/story/${latest.slug}`} data-od-id="open-episode-1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4 L20 12 L7 20 Z"/></svg>
+              打开第一集
+            </a>
+            <a class="btn btn-ghost" href="/story-list">故事列表</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分节符:最新一集 → 系列简介 -->
+  <div class="flourish" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <!-- 系列简介 -->
+  <section data-od-id="about" style="margin-bottom: 64px;">
+    <div class="grid grid-2" style="align-items: center; gap: 40px;">
+      <div>
+        <span class="eyebrow">关于这个故事</span>
+        <h2 style="margin-top: 8px; margin-bottom: 16px;">6 岁小橘子的睡前故事</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: var(--fg);">
+          创意来自 6 岁小橘子的口述,爸爸整理成稿。
+          每一集都是晶晶第一人称讲述她和姐姐亮亮在魔法学院学魔法、交朋友、慢慢长大的故事。
+          温柔、有趣、充满想象力 —— 适合 4 岁以上的小朋友。
+        </p>
+        <div class="row" style="margin-top: 20px;">
+          <span class="chip"><span style="color: var(--accent);">★</span> {characters.length} 位角色</span>
+          <span class="chip"><span style="color: var(--c-pink);">♥</span> 13 个场景</span>
+          <span class="chip"><span style="color: var(--c-mint);">●</span> {episodes.length} 集(1 已上线)</span>
+        </div>
+      </div>
+      <div>
+        <img
+          src={assetUrl('/assets/locations/卧室.jpg')}
+          alt="小橘子的卧室 · 睡前讲故事的地方"
+          style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--r-md); box-shadow: var(--shadow-card);"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 分节符:系列简介 → 主角三人 -->
+  <div class="flourish" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <!-- 主角三人 -->
+  <section data-od-id="featured-characters" style="margin-bottom: 64px;">
+    <div class="row" style="justify-content: space-between; align-items: end; margin-bottom: 24px;">
+      <div>
+        <span class="eyebrow">主角团</span>
+        <h2 style="margin-top: 8px;">三个最先认识的朋友</h2>
+      </div>
+      <a class="btn btn-ghost" href="/characters">全部 24 位 →</a>
+    </div>
+
+    <div class="grid grid-3">
+      {featuredChars.map((c, i) => (
+        <a class={`card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`} href={`/characters#char-${c.id}`} data-od-id={`card-${c.id}`}>
+          <img class="card-img" src={assetUrl(c.portrait)} alt={c.name} />
+          <div class="card-body">
+            <div class="row" style="margin-bottom: 6px;">
+              <span class="chip" style={`background: var(--c-${c.color}); color: oklch(20% 0.04 80); border-color: oklch(60% 0.10 80);`}>{c.age}</span>
+              <span class="chip">{c.role}</span>
+            </div>
+            <div class="card-title">{c.name}</div>
+            <div class="card-meta">{c.power}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 分节符:主角三人 → 在这里生活 -->
+  <div class="flourish" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <!-- 三个场景预览 -->
+  <section data-od-id="scene-preview" style="margin-bottom: 32px;">
+    <div class="row" style="justify-content: space-between; align-items: end; margin-bottom: 24px;">
+      <div>
+        <span class="eyebrow">魔法学院 · 地点</span>
+        <h2 style="margin-top: 8px;">在这里生活</h2>
+      </div>
+      <a class="btn btn-ghost" href="/scenes">全部 12 个地点 →</a>
+    </div>
+
+    <div class="grid grid-3">
+      {scenePreviewList.map((s, i) => (
+        <div class={`scene-card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`}>
+          <img src={assetUrl(s.img)} alt={s.name} />
+          <div class="scene-body">
+            <h3>{s.name}</h3>
+            <p>{s.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 页尾装饰分隔符 · 撑满视口宽度 -->
+  <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+</Base>

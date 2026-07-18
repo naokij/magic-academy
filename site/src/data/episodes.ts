@@ -1,0 +1,108 @@
+// 魔法学院 · 剧集数据
+// 数据真值源: 仓库根 docs/系列设定.md + stories/{slug}.md
+// 文件名约定: slug = N-标题.md / .mp3 / .jpg
+
+import type { Character } from './characters';
+import { characters } from './characters';
+
+export type EpisodeStatus = 'online' | 'soon';
+
+export interface Episode {
+  slug: string;
+  number: number;
+  title: string;
+  subtitle: string;
+  duration: string;        // e.g. "约 8 分钟"
+  status: EpisodeStatus;
+  cover: string;           // '/assets/covers/1-开学第一天.jpg'
+  audio?: string;          // '/audio/1-开学第一天.mp3'
+  banner?: string;
+  color: string;           // token key
+  excerpt: string;         // 列表卡片摘要
+  intro: string;           // 故事开篇一句话
+  charactersInScene: string[];   // 角色 id 数组
+  next?: { title: string; status: EpisodeStatus; slug: string };
+}
+
+const charMap = (id: string): Character => characters.find((c) => c.id === id)!;
+
+export const episodes: Episode[] = [
+  {
+    slug: '1-开学第一天',
+    number: 1,
+    title: '第一集 开学第一天',
+    subtitle: '晶晶和亮亮的开学日',
+    duration: '约 11 分 33 秒',
+    status: 'online',
+    cover: '/assets/covers/第一集.jpg',
+    audio: '/audio/1-开学第一天.mp3',
+    banner: '/assets/banners/城堡玩耍.jpg',
+    color: 'gold',
+    excerpt: '晶晶是初级,亮亮是中级 —— 姐妹俩刚来到魔法岛,兴奋得不行。台风「断剑」吹走了防护罩,四个守护者在守护小岛。食堂的影子会漂浮,午睡醒来老师发了点心,然后是魔法课。',
+    intro: '我叫晶晶,今年四岁。今天,是我和姐姐亮亮去魔法学院上学的第一天!',
+    charactersInScene: ['jingjing', 'liangliang', 'xiaotongtong', 'xiaobaozi', 'xiaotianxin', 'xiaotiandian', 'xiaohaimian', 'xiaoyueliang', 'xiaoyueguang', 'xiaoguangming', 'aolia', 'aolian', 'ailisi', 'taliya'],
+  },
+  {
+    slug: '2',
+    number: 2,
+    title: '第二集 · 敬请期待',
+    subtitle: '',
+    duration: '',
+    status: 'soon',
+    cover: '/assets/covers/第一集.jpg',
+    color: 'pink',
+    excerpt: '',
+    intro: '',
+    charactersInScene: [],
+  },
+  {
+    slug: '3',
+    number: 3,
+    title: '第三集 · 敬请期待',
+    subtitle: '',
+    duration: '',
+    status: 'soon',
+    cover: '/assets/covers/第一集.jpg',
+    color: 'violet',
+    excerpt: '',
+    intro: '',
+    charactersInScene: [],
+  },
+  {
+    slug: '4',
+    number: 4,
+    title: '第四集 · 敬请期待',
+    subtitle: '',
+    duration: '',
+    status: 'soon',
+    cover: '/assets/covers/第一集.jpg',
+    color: 'red',
+    excerpt: '',
+    intro: '',
+    charactersInScene: [],
+  },
+  {
+    slug: '5',
+    number: 5,
+    title: '第五集 · 敬请期待',
+    subtitle: '',
+    duration: '',
+    status: 'soon',
+    cover: '/assets/covers/第一集.jpg',
+    color: 'sky',
+    excerpt: '',
+    intro: '',
+    charactersInScene: [],
+  },
+];
+
+// 工具
+export function getEpisodeBySlug(slug: string): Episode | undefined {
+  return episodes.find((e) => e.slug === slug);
+}
+
+export function getCharactersInScene(ep: Episode): Character[] {
+  return ep.charactersInScene.map((id) => charMap(id)).filter(Boolean);
+}
+
+export const onlineEpisodes = episodes.filter((e) => e.status === 'online');

@@ -1,0 +1,184 @@
+---
+import Base from '~/layouts/Base.astro';
+import { scenes } from '~/data/scenes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+const castleCount = scenes.filter(s => s.zone === 'castle').length;
+const lifeCount = scenes.filter(s => s.zone === 'life').length;
+const outdoorCount = scenes.filter(s => s.zone === 'outdoor').length;
+---
+<Base title="场景介绍 · 魔法学院" active="scenes">
+  <section data-od-id="page-hero">
+    <span class="eyebrow">魔法学院 · 地点</span>
+    <h1 style="margin-top: 8px; margin-bottom: 12px;">{scenes.length} 个日常生活的地方</h1>
+    <p class="text-muted" style="max-width: 60ch;">
+      从城堡全景到浴室楼梯,每个地点都有它自己的故事。
+      食堂的影子会漂浮,花园是练习魔法的秘密角落。
+    </p>
+    <div class="row" style="margin-top: 16px;">
+      <span class="chip">城堡类 · {castleCount}</span>
+      <span class="chip">生活区 · {lifeCount}</span>
+      <span class="chip">户外 · {outdoorCount}</span>
+    </div>
+  </section>
+
+  <!-- 城堡大图 · cinematic full-width 16:9 -->
+  <section data-od-id="castle-feature" style="margin-top: 36px; margin-bottom: 36px;">
+    <div class="hero-cinema fade-in">
+      <div class="hero-bg">
+        <img
+          src={assetUrl('/assets/banners/城堡近景横版.jpg')}
+          alt="城堡近景横版 · 魔法学院城堡"
+          style="object-position: center 38%;"
+        />
+      </div>
+      <div class="hero-content">
+        <span class="eyebrow" style="color: oklch(98% 0.005 85);">FEATURED · 主角场景</span>
+        <h2 style="margin-top: 8px; margin-bottom: 8px; color: oklch(98% 0.005 85);">魔法学院城堡</h2>
+        <p style="font-size: 15px; line-height: 1.7; max-width: 52ch; margin-bottom: 0; color: oklch(95% 0.01 85);">
+          在魔法岛上,这座城堡就是学院的家。
+          但魔法岛的人都认为这座城堡是普通房子 —— 所以参观魔法岛不要太好奇哦。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 全部场景 -->
+  <div class="flourish" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <section data-od-id="all-scenes" style="margin-top: 24px;">
+    <h2 style="margin-bottom: 24px;">所有场景</h2>
+    <div class="grid grid-3">
+      {scenes.map((s, i) => {
+        const stem = s.image.replace(/\.jpg$/i, '');
+        const delayClass = i > 0 ? ` fade-in-d${Math.min(i, 3)}` : '';
+        return (
+          <div
+            class={`scene-card fade-in${delayClass}`}
+            data-od-id={s.odId}
+            data-zone={s.zone}
+            data-name={s.name}
+            data-desc={s.desc}
+            data-image={s.image}
+            id={s.odId}
+          >
+            <img
+              src={assetUrl(s.image)}
+              srcset={assetSrcset(`${stem}-400.jpg 400w, ${stem}-800.jpg 800w, ${stem}-1200.jpg 1200w, ${s.image} 2048w`)}
+              sizes="(max-width: 720px) 90vw, 360px"
+              alt={s.name}
+              loading="lazy"
+            />
+            <div class="scene-body">
+              <h3>{s.name}</h3>
+              <p>{s.highlights.join(' · ')}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- 串联回故事 -->
+  <div class="flourish" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <section style="margin-top: 56px;" data-od-id="cta-link">
+    <div class="card" style="padding: 28px; text-align: center;">
+      <span class="eyebrow">回到故事</span>
+      <h3 style="margin-top: 8px; margin-bottom: 16px;">听晶晶和亮亮在这些地方发生的故事</h3>
+      <a class="btn btn-primary" href="/story/1-开学第一天">打开第一集</a>
+    </div>
+  </section>
+
+  <!-- 页尾装饰分隔符 -->
+  <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+  </div>
+
+  <!-- 场景详情弹窗 -->
+  <div class="modal-backdrop" id="scene-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="scene-modal-close" aria-label="关闭">×</button>
+      <div class="modal-img">
+        <img id="scene-modal-img" alt="" />
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-name" id="scene-modal-name"></h2>
+        <p class="modal-bio" id="scene-modal-desc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 场景筛选
+    const filterRoot = document.getElementById('filter-root');
+    const allScenes = document.getElementById('all-scenes');
+    if (filterRoot && allScenes) {
+      const pills = filterRoot.querySelectorAll('.pill');
+      const cards = allScenes.querySelectorAll('.scene-card');
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          pills.forEach((p) => p.classList.remove('is-active'));
+          pill.classList.add('is-active');
+          const filter = pill.getAttribute('data-filter') || 'all';
+          cards.forEach((card) => {
+            const zone = card.getAttribute('data-zone') || '';
+            if (filter === 'all' || zone === filter) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
+
+    // 场景弹窗
+    const modal = document.getElementById('scene-modal');
+    const modalClose = document.getElementById('scene-modal-close');
+    const modalName = document.getElementById('scene-modal-name');
+    const modalDesc = document.getElementById('scene-modal-desc');
+    const modalImg = document.getElementById('scene-modal-img');
+
+    function openSceneModal(card) {
+      const name = card.getAttribute('data-name') || '';
+      const desc = card.getAttribute('data-desc') || '';
+      const image = card.getAttribute('data-image') || '';
+      if (modalName) modalName.textContent = name;
+      if (modalDesc) modalDesc.textContent = desc;
+      if (modalImg) { modalImg.src = image; modalImg.alt = name; }
+      if (modal) {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeSceneModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    if (allScenes) {
+      allScenes.querySelectorAll('.scene-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          openSceneModal(card);
+        });
+      });
+    }
+    if (modalClose) modalClose.addEventListener('click', closeSceneModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeSceneModal();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSceneModal();
+    });
+  </script>
+</Base>

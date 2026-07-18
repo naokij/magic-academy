@@ -1,0 +1,284 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { pinyin } from 'pinyin-pro';
+import Base from '~/layouts/Base.astro';
+import { episodes } from '~/data/episodes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+export function getStaticPaths() {
+  return episodes
+    .filter((ep) => ep.status === 'online')
+    .map((ep) => ({
+      params: { slug: ep.slug },
+      props: { ep },
+    }));
+}
+
+const { ep } = Astro.props;
+const coverStem = ep.cover.replace(/\.jpg$/i, '');
+
+// 读 markdown 仓库根 stories/{slug}.md
+const storiesDir = path.resolve(process.cwd(), '../stories');
+const mdPath = path.join(storiesDir, `${ep.slug}.md`);
+
+let storyParagraphs: string[] = [];
+try {
+  const md = fs.readFileSync(mdPath, 'utf-8');
+  storyParagraphs = md
+    .replace(/^# .+\n/, '')
+    .trim()
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0 && !p.startsWith('*'));
+} catch (e) {
+  storyParagraphs = ['故事正文加载中…'];
+}
+
+// 给每段加 ruby 注音
+function annotate(para: string): string {
+  const pyArr = pinyin(para, { toneType: 'symbol', type: 'array' });
+  let html = '';
+  for (let i = 0; i < para.length; i++) {
+    const ch = para[i];
+    const py = pyArr[i] || '';
+    if (ch >= '\u4e00' && ch <= '\u9fff') {
+      html += `<ruby>${ch}<rt>${py}</rt></ruby>`;
+    } else if (ch === '\n') {
+      html += '<br/>';
+    } else {
+      html += ch;
+    }
+  }
+  return html;
+}
+
+const storyHtml = storyParagraphs
+  .map((para) => `<p class="story-paragraph">${annotate(para)}</p>`)
+  .join('');
+
+// 检查音频是否存在
+const audioPath = path.resolve(process.cwd(), `../audio/${ep.slug}.mp3`);
+const hasAudio = fs.existsSync(audioPath);
+
+// 敲墙暗号数据(从原型精确移植)
+const wallCodes = [
+  { n: '敲 1 下', text: '平安' },
+  { n: '敲 2 下', text: '晚安' },
+  { n: '敲 3 下', text: '我这边已经开始锻炼身体' },
+  { n: '敲 4 下', text: '我的能量已经到百分之一百' },
+  { n: '敲 5 下', text: '姐姐撞墙了' },
+  { n: '敲 6 下', text: '我撞墙了' },
+];
+---
+<Base title={`${ep.title} · 魔法学院`} active="list" description={ep.excerpt}>
+  <div class="story-layout fade-in" data-od-id="story-body">
+    <!-- 左侧：固定封面 + 音频播放器 -->
+    <aside class="story-cover-sticky" data-od-id="story-aside">
+      <div class="story-cover">
+        <img
+          src={assetUrl(ep.cover)}
+          srcset={assetSrcset(`${coverStem}-400.jpg 400w, ${coverStem}-800.jpg 800w, ${coverStem}-1200.jpg 1200w, ${ep.cover} 2048w`)}
+          sizes="(max-width: 900px) 90vw, 360px"
+          alt={ep.title + '封面'}
+        />
+        <span class="sparkle" style="top: 14%; left: 12%; width: 14px; height: 14px; z-index: 3;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+        <span class="sparkle s2" style="top: 28%; right: 14%; width: 10px; height: 10px; z-index: 3;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+        <span class="sparkle s3" style="bottom: 22%; left: 22%; width: 8px; height: 8px; z-index: 3;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+      </div>
+
+      <div class="audio-player" id="player-root" data-od-id="audio-player" data-state={hasAudio ? 'ready' : 'placeholder'}>
+        {hasAudio ? (
+          <>
+            <div class="row">
+              <button class="play-btn" id="audio-play" aria-label="播放 / 暂停">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4 L20 12 L7 20 Z"/></svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+              </button>
+
+              <div class="progress">
+                <div class="progress-bar" id="audio-bar" role="slider" aria-label="播放进度">
+                  <div class="progress-fill" id="audio-fill"></div>
+                  <div class="progress-thumb" id="audio-thumb"></div>
+                </div>
+                <div class="time">
+                  <span class="time-cur" id="audio-cur">00:00</span>
+                  <span class="time-dur" id="audio-dur">--:--</span>
+                </div>
+              </div>
+
+              <div class="controls">
+                <button class="ctrl-btn skip-back" id="audio-back" aria-label="后退 10 秒">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 19l-7-7 7-7"/><path d="M20 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="speed-pill" id="audio-speed" aria-label="切换倍速">1x</button>
+                <button class="ctrl-btn skip-fwd" id="audio-fwd" aria-label="前进 10 秒">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5l7 7-7 7"/><path d="M4 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <audio preload="none" src={assetUrl(ep.audio!)}></audio>
+          </>
+        ) : (
+          <div class="placeholder-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+            <span>音频文件还没准备好 —— 等爸爸录好第一集,就会自动激活播放按钮。</span>
+          </div>
+        )}
+      </div>
+    </aside>
+
+    <!-- 右侧：故事正文 + 拼音 -->
+    <article class="story-body" data-od-id="story-body-content">
+      <span class="eyebrow">EPISODE {String(ep.number).padStart(2, '0')}</span>
+      <h1 style="margin-top: 8px;">{ep.title}</h1>
+      <div class="meta">
+        <span class="chip">{ep.duration}</span>
+      </div>
+
+      <div class="story-text" id="story-text" set:html={storyHtml} />
+
+      <div class="end-pill" data-od-id="end-pill">
+        故事的第一集完,请听第二集
+        <div style="margin-top: 6px; font-size: 13px; color: var(--muted);">— 晶晶妹妹 · 口述 —</div>
+      </div>
+
+      <div class="flourish" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+      </div>
+
+      <section style="margin-top: 20px; padding-top: 8px;" data-od-id="secret-bonus">
+        <span class="eyebrow">补充 · 睡前小彩蛋</span>
+        <h3 style="margin-top: 8px; margin-bottom: 12px;">宿舍敲墙暗号</h3>
+        <p class="text-muted" style="margin-bottom: 16px;">
+          姐妹俩在宿舍里隔着墙敲墙互动 —— 这是她们自己发明的密码。
+        </p>
+        <div class="grid grid-2" style="--stack-gap: 8px;">
+          {wallCodes.map((c) => (
+            <div class="row">
+              <span class="chip chip-accent" style="min-width: 60px; justify-content: center;">{c.n}</span>
+              <span>{c.text}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+    </article>
+  </div>
+
+  {hasAudio && (
+    <script>
+      const audio = document.querySelector('.audio-player audio') as HTMLAudioElement;
+      const playBtn = document.getElementById('audio-play')!;
+      const playIcon = playBtn.querySelector('.play-icon') as SVGElement;
+      const pauseIcon = playBtn.querySelector('.pause-icon') as SVGElement;
+      const fill = document.getElementById('audio-fill') as HTMLElement;
+      const thumb = document.getElementById('audio-thumb') as HTMLElement;
+      const bar = document.getElementById('audio-bar') as HTMLElement;
+      const cur = document.getElementById('audio-cur')!;
+      const dur = document.getElementById('audio-dur')!;
+      const speed = document.getElementById('audio-speed')!;
+      const back = document.getElementById('audio-back')!;
+      const fwd = document.getElementById('audio-fwd')!;
+      const storyText = document.getElementById('story-text')!;
+      const paragraphs = Array.from(storyText.querySelectorAll<HTMLElement>('p.story-paragraph'));
+      const playerRoot = document.querySelector('.audio-player') as HTMLElement;
+
+      const speeds = [0.8, 1, 1.25, 1.5];
+      let speedIdx = 1;
+
+      function fmt(s: number) {
+        const m = Math.floor(s / 60).toString().padStart(2, '0');
+        const ss = Math.floor(s % 60).toString().padStart(2, '0');
+        return `${m}:${ss}`;
+      }
+
+      function setIcon(playing: boolean) {
+        playIcon.style.display = playing ? 'none' : '';
+        pauseIcon.style.display = playing ? '' : 'none';
+        playerRoot.dataset.state = playing ? 'playing' : 'ready';
+      }
+
+      playBtn.addEventListener('click', () => {
+        if (audio.paused) audio.play(); else audio.pause();
+      });
+      audio.addEventListener('play', () => setIcon(true));
+      audio.addEventListener('pause', () => setIcon(false));
+      audio.addEventListener('ended', () => setIcon(false));
+
+      audio.addEventListener('loadedmetadata', () => {
+        if (audio.duration && !isNaN(audio.duration)) dur.textContent = fmt(audio.duration);
+      });
+
+      audio.addEventListener('timeupdate', () => {
+        const t = audio.currentTime;
+        const d = audio.duration || 1;
+        const pct = Math.min(100, (t / d) * 100);
+        fill.style.width = pct + '%';
+        thumb.style.left = pct + '%';
+        cur.textContent = fmt(t);
+        // 段落级高亮(精修版无时间码,粗粒度按段落时长均分)
+        if (paragraphs.length > 0 && d > 0) {
+          const segLen = d / paragraphs.length;
+          const idx = Math.min(paragraphs.length - 1, Math.floor(t / segLen));
+          paragraphs.forEach((p, i) => {
+            p.classList.toggle('is-active', i === idx);
+            p.classList.toggle('is-played', i < idx);
+          });
+        }
+      });
+
+      bar.addEventListener('click', (e) => {
+        const rect = bar.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        if (audio.duration) audio.currentTime = audio.duration * Math.max(0, Math.min(1, ratio));
+      });
+
+      // 点击段落跳转(用段落时长均分估时码)
+      paragraphs.forEach((p, i) => {
+        p.addEventListener('click', () => {
+          if (audio.duration && paragraphs.length > 0) {
+            const segLen = audio.duration / paragraphs.length;
+            audio.currentTime = segLen * i;
+            audio.play();
+          }
+        });
+        p.style.cursor = 'pointer';
+      });
+
+      back.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+      fwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10); });
+      speed.addEventListener('click', () => {
+        speedIdx = (speedIdx + 1) % speeds.length;
+        audio.playbackRate = speeds[speedIdx];
+        speed.textContent = speeds[speedIdx] + 'x';
+      });
+    </script>
+  )}
+
+  <style>
+    .story-text p.story-paragraph {
+      margin-bottom: 18px;
+      line-height: 2.2;
+      transition: background 0.18s, color 0.18s;
+      border-radius: 8px;
+      padding: 4px 8px;
+    }
+    .story-text p.story-paragraph.is-active {
+      background: oklch(95% 0.06 80 / 0.45);
+      outline: 2px solid var(--accent);
+    }
+    .story-text p.story-paragraph.is-played {
+      color: var(--muted);
+    }
+    .story-text p.story-paragraph:hover {
+      background: oklch(96% 0.03 80 / 0.6);
+    }
+  </style>
+</Base>

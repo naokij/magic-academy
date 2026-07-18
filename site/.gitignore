@@ -1,0 +1,10 @@
+dist/
+.astro/
+node_modules/
+.DS_Store
+*.log
+.env
+.env.local
+src/data/asset-hashes.json
+public/assets
+public/audio
