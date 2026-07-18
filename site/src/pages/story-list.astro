@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
 import { episodes, onlineEpisodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
@@ -24,7 +25,6 @@ const upcoming = total - online;
   <section data-od-id="episode-list" style="margin-top: 40px;">
     <div class="stack" style="--stack-gap: 18px;">
       {episodes.map((ep, i) => {
-        const stem = ep.cover.replace(/\.jpg$/i, '');
         const isOnline = ep.status === 'online';
         const delayClass = i > 0 ? ` fade-in-d${i}` : '';
         return (
@@ -32,11 +32,11 @@ const upcoming = total - online;
             {isOnline ? (
               <>
                 <div class="ep-cover">
-                  <img
-                    src={assetUrl(ep.cover)}
-                    srcset={assetSrcset(`${stem}-400.jpg 400w, ${stem}-800.jpg 800w, ${stem}-1200.jpg 1200w, ${ep.cover} 2048w`)}
-                    sizes="(max-width: 720px) 90vw, 360px"
+                  <ResponsiveImage
+                    src={ep.cover}
                     alt={ep.title + '封面'}
+                    sizes="(max-width: 720px) 90vw, 360px"
+                    widths={[400, 800, 1200]}
                   />
                 </div>
                 <div class="ep-body">

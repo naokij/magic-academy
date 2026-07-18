@@ -1,5 +1,7 @@
 ---
 import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
+import CharacterPortrait from '~/components/CharacterPortrait.astro';
 import { episodes, onlineEpisodes, getEpisodeBySlug } from '~/data/episodes';
 import { characters } from '~/data/characters';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
@@ -22,7 +24,14 @@ const scenePreviewList = [
   <section data-od-id="hero" style="margin-bottom: 64px;">
     <div class="hero-cinema fade-in">
       <div class="hero-bg">
-        <img src={assetUrl('/assets/banners/城堡玩耍.jpg')} alt="魔法学院城堡 · 梦幻黄昏全景" />
+        <ResponsiveImage
+          src="/assets/banners/城堡玩耍.jpg"
+          alt="魔法学院城堡 · 梦幻黄昏全景"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          widths={[800, 1600]}
+          loading="eager"
+          fetchpriority="high"
+        />
       </div>
       <span class="sparkle" style="top: 14%; left: 8%; width: 14px; height: 14px;">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
@@ -56,13 +65,16 @@ const scenePreviewList = [
       <div class="latest-episode-layout">
         <!-- 左:方形封面 -->
         <div style="position: relative; aspect-ratio: 1/1; overflow: hidden;">
-          <img
-            src={assetUrl(latest.cover)}
-            srcset={assetSrcset(`${coverStem}-400.jpg 400w, ${coverStem}-800.jpg 800w, ${coverStem}-1200.jpg 1200w, ${latest.cover} 2048w`)}
-            sizes="(max-width: 720px) 90vw, 360px"
+          <ResponsiveImage
+            src={latest.cover}
             alt={latest.title + '封面'}
-            style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;"
+            sizes="(max-width: 720px) 90vw, 360px"
+            widths={[400, 800, 1200]}
+            className="latest-episode-cover-img"
           />
+          <style>
+            .latest-episode-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+          </style>
           <span class="sparkle" style="top: 12%; left: 18%; width: 12px; height: 12px;">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
           </span>
@@ -118,11 +130,16 @@ const scenePreviewList = [
         </div>
       </div>
       <div>
-        <img
-          src={assetUrl('/assets/locations/卧室.jpg')}
+        <ResponsiveImage
+          src="/assets/locations/卧室.jpg"
           alt="小橘子的卧室 · 睡前讲故事的地方"
-          style="width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--r-md); box-shadow: var(--shadow-card);"
+          sizes="(max-width: 720px) 90vw, 50vw"
+          widths={[400, 800, 1200]}
+          className="about-bedroom-img"
         />
+        <style>
+          .about-bedroom-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--r-md); box-shadow: var(--shadow-card); }
+        </style>
       </div>
     </div>
   </section>
@@ -145,7 +162,7 @@ const scenePreviewList = [
     <div class="grid grid-3">
       {featuredChars.map((c, i) => (
         <a class={`card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`} href={`/characters#char-${c.id}`} data-od-id={`card-${c.id}`}>
-          <img class="card-img" src={assetUrl(c.portrait)} alt={c.name} />
+          <CharacterPortrait portrait={c.portrait} name={c.name} loading="eager" />
           <div class="card-body">
             <div class="row" style="margin-bottom: 6px;">
               <span class="chip" style={`background: var(--c-${c.color}); color: oklch(20% 0.04 80); border-color: oklch(60% 0.10 80);`}>{c.age}</span>
@@ -177,7 +194,16 @@ const scenePreviewList = [
     <div class="grid grid-3">
       {scenePreviewList.map((s, i) => (
         <div class={`scene-card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`}>
-          <img src={assetUrl(s.img)} alt={s.name} />
+          <ResponsiveImage
+            src={s.img}
+            alt={s.name}
+            sizes="(max-width: 720px) 90vw, 33vw"
+            widths={[400, 800, 1200]}
+            className="scene-card-bg"
+          />
+          <style>
+            .scene-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+          </style>
           <div class="scene-body">
             <h3>{s.name}</h3>
             <p>{s.desc}</p>

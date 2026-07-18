@@ -1,5 +1,6 @@
 ---
 import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
 import { scenes } from '~/data/scenes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
@@ -26,11 +27,18 @@ const outdoorCount = scenes.filter(s => s.zone === 'outdoor').length;
   <section data-od-id="castle-feature" style="margin-top: 36px; margin-bottom: 36px;">
     <div class="hero-cinema fade-in">
       <div class="hero-bg">
-        <img
-          src={assetUrl('/assets/banners/城堡近景横版.jpg')}
+        <ResponsiveImage
+          src="/assets/banners/城堡近景横版.jpg"
           alt="城堡近景横版 · 魔法学院城堡"
-          style="object-position: center 38%;"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          widths={[800, 1600]}
+          loading="eager"
+          fetchpriority="high"
+          className="scene-castle-hero-img"
         />
+        <style>
+          .scene-castle-hero-img { object-position: center 38%; }
+        </style>
       </div>
       <div class="hero-content">
         <span class="eyebrow" style="color: oklch(98% 0.005 85);">FEATURED · 主角场景</span>
@@ -52,7 +60,6 @@ const outdoorCount = scenes.filter(s => s.zone === 'outdoor').length;
     <h2 style="margin-bottom: 24px;">所有场景</h2>
     <div class="grid grid-3">
       {scenes.map((s, i) => {
-        const stem = s.image.replace(/\.jpg$/i, '');
         const delayClass = i > 0 ? ` fade-in-d${Math.min(i, 3)}` : '';
         return (
           <div
@@ -64,12 +71,11 @@ const outdoorCount = scenes.filter(s => s.zone === 'outdoor').length;
             data-image={s.image}
             id={s.odId}
           >
-            <img
-              src={assetUrl(s.image)}
-              srcset={assetSrcset(`${stem}-400.jpg 400w, ${stem}-800.jpg 800w, ${stem}-1200.jpg 1200w, ${s.image} 2048w`)}
-              sizes="(max-width: 720px) 90vw, 360px"
+            <ResponsiveImage
+              src={s.image}
               alt={s.name}
-              loading="lazy"
+              sizes="(max-width: 720px) 90vw, 360px"
+              widths={[400, 800, 1200]}
             />
             <div class="scene-body">
               <h3>{s.name}</h3>

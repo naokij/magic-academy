@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pinyin } from 'pinyin-pro';
 import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
 import { episodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
@@ -16,7 +17,6 @@ export function getStaticPaths() {
 }
 
 const { ep } = Astro.props;
-const coverStem = ep.cover.replace(/\.jpg$/i, '');
 
 // 读 markdown 仓库根 stories/{slug}.md
 const storiesDir = path.resolve(process.cwd(), '../stories');
@@ -76,11 +76,13 @@ const wallCodes = [
     <!-- 左侧：固定封面 + 音频播放器 -->
     <aside class="story-cover-sticky" data-od-id="story-aside">
       <div class="story-cover">
-        <img
-          src={assetUrl(ep.cover)}
-          srcset={assetSrcset(`${coverStem}-400.jpg 400w, ${coverStem}-800.jpg 800w, ${coverStem}-1200.jpg 1200w, ${ep.cover} 2048w`)}
-          sizes="(max-width: 900px) 90vw, 360px"
+        <ResponsiveImage
+          src={ep.cover}
           alt={ep.title + '封面'}
+          sizes="(max-width: 900px) 90vw, 360px"
+          widths={[400, 800, 1200]}
+          loading="eager"
+          fetchpriority="high"
         />
         <span class="sparkle" style="top: 14%; left: 12%; width: 14px; height: 14px; z-index: 3;">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
