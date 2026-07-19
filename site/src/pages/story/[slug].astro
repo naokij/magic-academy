@@ -57,6 +57,80 @@ const storyHtml = storyParagraphs
   .map((para) => `<p class="story-paragraph">${annotate(para)}</p>`)
   .join('');
 
+// 读取对齐后的 ASR (whisper 词级时间戳 -> 拼音对齐到原文逐字)
+// 产出文件: site/data/asr/{slug}.aligned.json (由 scripts/asr.sh + scripts/align-asr.py 生成)
+// 格式: [{char, start, end}, ...] 字级时间戳, 秒, 已过滤标题/空白
+type Annotated = { text: string; start: number; end: number; py: string };
+let annotated: Annotated[] = [];
+try {
+  const asrDir = path.resolve(process.cwd(), 'data/asr');
+  const alignedPath = path.join(asrDir, `${ep.slug}.aligned.json`);
+  const raw = JSON.parse(fs.readFileSync(alignedPath, 'utf-8'));
+  if (Array.isArray(raw)) {
+    annotated = raw
+      .map((w: { char?: string; text?: string; start: number; end: number }) => {
+        const text = w.char ?? w.text ?? '';
+        const py = (() => {
+          try {
+            const arr = pinyin(text, { toneType: 'symbol', type: 'array' });
+            return arr[0] || '';
+          } catch {
+            return '';
+          }
+        })();
+        return { text, start: w.start, end: w.end, py };
+      })
+      .filter((w: Annotated) => w.text);
+  }
+} catch {
+  annotated = [];
+}
+
+// 将 annotated 按段落分组, 恢复 markdown 的分段结构。
+// aligned.json 是原文非空白字符的子序列 (align-asr.py 输出的 char 即 ref_chars[ref_pos]),
+// 因此用贪心子序列匹配为每个 annotated 字分配段落索引。
+// 同时记录段落原文里的 \n 位置, 渲染时插 <br/> (本项目部分段落含换行)。
+type RenderToken = { kind: 'word'; w: Annotated; gi: number } | { kind: 'br' };
+type ParaGroup = { paraIdx: number; tokens: RenderToken[] };
+let paraGroups: ParaGroup[] = [];
+if (annotated.length > 0) {
+  const flatRef: { paraIdx: number; char: string }[] = [];
+  storyParagraphs.forEach((p, pi) => {
+    for (const ch of p) {
+      if (!/\s/.test(ch)) flatRef.push({ paraIdx: pi, char: ch });
+    }
+  });
+  let k = 0;
+  const lastPara = () => (flatRef.length ? flatRef[flatRef.length - 1].paraIdx : 0);
+  // 先给每个 annotated 字分配 paraIdx
+  const wordsWithPara = annotated.map((w, gi) => {
+    const ch = w.text;
+    while (k < flatRef.length && flatRef[k].char !== ch) k++;
+    const paraIdx = k < flatRef.length ? flatRef[k].paraIdx : lastPara();
+    if (k < flatRef.length) k++;
+    return { w, gi, paraIdx };
+  });
+  // 按段落原文字符序列重建 tokens (汉字 -> word, \n -> br, 其他 -> 原样输出由模板处理)
+  // 这里只产 word 和 br token; 标点/字母由模板按 annotated 顺序消费 (它们也在 annotated 里, 但非汉字不会包 span)
+  paraGroups = storyParagraphs.map((para, pi) => {
+    const tokens: RenderToken[] = [];
+    // 该段落的 annotated 字 (按 gi 升序)
+    const paraWords = wordsWithPara.filter((x) => x.paraIdx === pi);
+    let wordCursor = 0;
+    for (const ch of para) {
+      if (ch === '\n') {
+        tokens.push({ kind: 'br' });
+      } else if (/\s/.test(ch)) {
+        // 空白跳过 (markdown 已 trim)
+      } else if (wordCursor < paraWords.length) {
+        tokens.push({ kind: 'word', w: paraWords[wordCursor].w, gi: paraWords[wordCursor].gi });
+        wordCursor++;
+      }
+    }
+    return { paraIdx: pi, tokens };
+  });
+}
+
 // 检查音频是否存在
 const audioPath = path.resolve(process.cwd(), `../audio/${ep.slug}.mp3`);
 const hasAudio = fs.existsSync(audioPath);
@@ -145,7 +219,29 @@ const wallCodes = [
         <span class="chip">{ep.duration}</span>
       </div>
 
-      <div class="story-text" id="story-text" set:html={storyHtml} />
+      {annotated.length > 0 ? (
+        <div class="story-text" id="story-text">
+          {paraGroups.map((group) => (
+            <p class="story-paragraph">
+              {group.tokens.map((tok) => (
+                tok.kind === 'br' ? (
+                  <br/>
+                ) : (
+                  tok.w.text >= '\u4e00' && tok.w.text <= '\u9fff' ? (
+                    <span class="w" data-i={tok.gi} data-start={tok.w.start} data-end={tok.w.end}>
+                      <ruby>{tok.w.text}<rt>{tok.w.py}</rt></ruby>
+                    </span>
+                  ) : (
+                    tok.w.text
+                  )
+                )
+              ))}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <div class="story-text" id="story-text" set:html={storyHtml} />
+      )}
 
       <div class="end-pill" data-od-id="end-pill">
         故事的第一集完,请听第二集
@@ -207,17 +303,131 @@ const wallCodes = [
         playerRoot.dataset.state = playing ? 'playing' : 'ready';
       }
 
+      // === 逐字高亮 (有 ASR 数据时启用) ===
+      const spanEls = storyText.querySelectorAll('.w');
+      const wordEls = spanEls.length
+        ? Array.from(spanEls).map((s) => ({
+            el: s as HTMLElement,
+            start: parseFloat((s as HTMLElement).dataset.start || '0'),
+            end: parseFloat((s as HTMLElement).dataset.end || '0'),
+          }))
+        : [];
+      const hasWordHighlight = wordEls.length > 0;
+
+      // 滚动相关缓存 (避免每次 highlight 都查 DOM 几何触发 reflow)
+      const asideEl = document.querySelector('.story-cover-sticky');
+      let isMobile = window.innerWidth < 720;
+      let vh = window.innerHeight;
+      let asideBottom = asideEl ? asideEl.getBoundingClientRect().bottom : 56;
+      window.addEventListener('resize', () => {
+        isMobile = window.innerWidth < 720;
+        vh = window.innerHeight;
+        asideBottom = asideEl ? asideEl.getBoundingClientRect().bottom : 56;
+      });
+
+      let activeIdx = -1;
+      let lastScrollTime = 0;
+
+      // 二分查找当前时间对应的字索引 (start <= t < end)
+      function findWordIdx(t: number) {
+        let lo = 0, hi = wordEls.length - 1;
+        while (lo <= hi) {
+          const mid = (lo + hi) >>> 1;
+          const w = wordEls[mid];
+          if (t < w.start) hi = mid - 1;
+          else if (t >= w.end) lo = mid + 1;
+          else return mid;
+        }
+        return -1;
+      }
+
+      function highlight(t: number) {
+        const idx = findWordIdx(t);
+        if (idx === activeIdx) return;
+        if (activeIdx >= 0 && wordEls[activeIdx]) wordEls[activeIdx].el.classList.remove('is-active');
+        if (idx >= 0) {
+          wordEls[idx].el.classList.add('is-active');
+          // 滚动跟随: 用 offsetTop (静态布局值) 避免 reflow, 最多每秒 1 次
+          const now = Date.now();
+          if (now - lastScrollTime > 1000) {
+            const el = wordEls[idx].el;
+            const elTop = el.offsetTop;
+            const viewTop = window.scrollY;
+            if (isMobile) {
+              const target = Math.min(asideBottom + 24, vh - 120);
+              const elViewportTop = elTop - viewTop;
+              if (Math.abs(elViewportTop - target) > 30) {
+                lastScrollTime = now;
+                window.scrollTo({ top: elTop - target, behavior: 'auto' });
+              }
+            } else {
+              const margin = 120;
+              const elViewportTop = elTop - viewTop;
+              const elViewportBottom = elViewportTop + (el.offsetHeight || 24);
+              if (elViewportTop < margin || elViewportBottom > vh - margin) {
+                lastScrollTime = now;
+                window.scrollTo({ top: elTop - vh * 0.5, behavior: 'auto' });
+              }
+            }
+          }
+        }
+        activeIdx = idx;
+      }
+
+      // rAF 驱动高亮 (~16ms 精度, 比 timeupdate ~250ms 精确得多)
+      let rafId: number | null = null;
+      let lastDisplayedSec = -1;
+      function highlightLoop() {
+        if (!audio.paused && !audio.ended && audio.duration) {
+          const t = audio.currentTime;
+          const pct = t / audio.duration;
+          // 进度条用 transform 走合成层, 不触发 reflow
+          fill.style.transform = `scaleX(${pct})`;
+          thumb.style.left = `${pct * 100}%`;
+          const sec = Math.floor(t);
+          if (sec !== lastDisplayedSec) {
+            lastDisplayedSec = sec;
+            cur.textContent = fmt(t);
+          }
+          if (hasWordHighlight) highlight(t);
+        }
+        rafId = requestAnimationFrame(highlightLoop);
+      }
+      function startHighlight() { if (!rafId) highlightLoop(); }
+      function stopHighlight() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+
+      // 页面不可见时暂停 rAF 省电
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopHighlight();
+        else if (!audio.paused) startHighlight();
+      });
+
+      // === 点字跳转 (事件委托到 storyText, 避免上千 span 各绑监听) ===
+      if (hasWordHighlight) {
+        storyText.addEventListener('click', (e) => {
+          const span = (e.target as HTMLElement).closest('.w') as HTMLElement | null;
+          if (!span) return;
+          const start = parseFloat(span.dataset.start || '0');
+          if (!isFinite(start)) return;
+          // preload="none" 时 duration 可能是 NaN, 直接 seek + play 即可触发加载
+          audio.currentTime = start;
+          audio.play();
+        });
+      }
+
+      // === 控件交互 ===
       playBtn.addEventListener('click', () => {
         if (audio.paused) audio.play(); else audio.pause();
       });
-      audio.addEventListener('play', () => setIcon(true));
-      audio.addEventListener('pause', () => setIcon(false));
-      audio.addEventListener('ended', () => setIcon(false));
+      audio.addEventListener('play', () => { setIcon(true); startHighlight(); });
+      audio.addEventListener('pause', () => { setIcon(false); stopHighlight(); });
+      audio.addEventListener('ended', () => { setIcon(false); stopHighlight(); });
 
       audio.addEventListener('loadedmetadata', () => {
         if (audio.duration && !isNaN(audio.duration)) dur.textContent = fmt(audio.duration);
       });
 
+      // timeupdate 作为 rAF 的备用 (页面隐藏时 rAF 停, 进度条仍更新)
       audio.addEventListener('timeupdate', () => {
         const t = audio.currentTime;
         const d = audio.duration || 1;
@@ -225,8 +435,8 @@ const wallCodes = [
         fill.style.width = pct + '%';
         thumb.style.left = pct + '%';
         cur.textContent = fmt(t);
-        // 段落级高亮(精修版无时间码,粗粒度按段落时长均分)
-        if (paragraphs.length > 0 && d > 0) {
+        // 无 ASR 数据时退回段落级均分高亮
+        if (!hasWordHighlight && paragraphs.length > 0 && d > 0) {
           const segLen = d / paragraphs.length;
           const idx = Math.min(paragraphs.length - 1, Math.floor(t / segLen));
           paragraphs.forEach((p, i) => {
@@ -242,17 +452,19 @@ const wallCodes = [
         if (audio.duration) audio.currentTime = audio.duration * Math.max(0, Math.min(1, ratio));
       });
 
-      // 点击段落跳转(用段落时长均分估时码)
-      paragraphs.forEach((p, i) => {
-        p.addEventListener('click', () => {
-          if (audio.duration && paragraphs.length > 0) {
-            const segLen = audio.duration / paragraphs.length;
-            audio.currentTime = segLen * i;
-            audio.play();
-          }
+      // 无 ASR 数据时: 点击段落跳转 (时长均分估时码)
+      if (!hasWordHighlight) {
+        paragraphs.forEach((p, i) => {
+          p.addEventListener('click', () => {
+            if (audio.duration && paragraphs.length > 0) {
+              const segLen = audio.duration / paragraphs.length;
+              audio.currentTime = segLen * i;
+              audio.play();
+            }
+          });
+          p.style.cursor = 'pointer';
         });
-        p.style.cursor = 'pointer';
-      });
+      }
 
       back.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
       fwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10); });
@@ -272,6 +484,25 @@ const wallCodes = [
       border-radius: 8px;
       padding: 4px 8px;
     }
+    /* 逐字 span (有 ASR 时间戳时生效) */
+    .story-text .w {
+      display: inline-block;
+      border-radius: 3px;
+      padding: 1px 0;
+      cursor: pointer;
+      contain: layout style;
+      transition: background 0.12s ease;
+    }
+    .story-text .w:hover {
+      background: oklch(95% 0.04 80 / 0.5);
+    }
+    .story-text .w.is-active {
+      background: oklch(95% 0.06 80 / 0.6);
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+      transition: none;
+    }
+    /* 段落级 fallback (无 ASR 数据时生效) */
     .story-text p.story-paragraph.is-active {
       background: oklch(95% 0.06 80 / 0.45);
       outline: 2px solid var(--accent);
