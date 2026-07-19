@@ -378,18 +378,16 @@ main {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     box-shadow: 0 4px 12px oklch(28% 0.06 305 / 0.08);
+    align-items: center; /* 封面图居中,避免正方形占满屏宽 */
   }
-  /* 封面图压扁成横版,避免占满屏 */
+  /* 封面图保持 1:1 正方形,限制最大宽度避免占满屏 */
   .story-cover-sticky .story-cover {
+    width: clamp(160px, 40vw, 200px);
     border-radius: var(--r-md);
-    aspect-ratio: 16 / 9;
     box-shadow: none;
   }
-  .story-cover-sticky .story-cover img {
-    aspect-ratio: 16 / 9;
-  }
   .story-cover-sticky .story-cover::after { inset: 6px; }
-  /* 播放器紧贴封面下方,去掉外层卡片间距 */
+  /* 播放器占满宽度,紧贴封面下方 */
   .story-cover-sticky .audio-player {
     margin-top: 10px;
     padding: 12px 14px;
