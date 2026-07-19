@@ -236,7 +236,9 @@ const wallCodes = [
                       <ruby>{tok.w.text}<rt>{tok.w.py}</rt></ruby>
                     </span>
                   ) : (
-                    tok.w.text
+                    <span class="w punct">
+                      <ruby>{tok.w.text}<rt aria-hidden="true"></rt></ruby>
+                    </span>
                   )
                 )
               ))}
@@ -308,7 +310,8 @@ const wallCodes = [
       }
 
       // === 逐字高亮 (有 ASR 数据时启用) ===
-      const spanEls = storyText.querySelectorAll('.w');
+      // 只选汉字 .w (有 data-start), 排除标点 .w.punct (无时间戳)
+      const spanEls = storyText.querySelectorAll('.w:not(.punct)');
       const wordEls = spanEls.length
         ? Array.from(spanEls).map((s) => ({
             el: s as HTMLElement,
@@ -419,7 +422,8 @@ const wallCodes = [
       if (hasWordHighlight) {
         storyText.addEventListener('click', (e) => {
           const span = (e.target as HTMLElement).closest('.w') as HTMLElement | null;
-          if (!span) return;
+          // 排除标点 (.punct 无时间戳) 和无 data-start 的元素
+          if (!span || span.classList.contains('punct')) return;
           const start = parseFloat(span.dataset.start || '0');
           if (!isFinite(start)) return;
           // preload="none" 时 duration 可能是 NaN, 直接 seek + play 即可触发加载

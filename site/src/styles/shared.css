@@ -474,6 +474,39 @@ main {
 }
 .story-text ruby {
   ruby-align: center;
+  /* 用 inline-flex + column-reverse 让注音在上、字在下垂直堆叠,
+     盒高度 = 注音 + 字, 所有字符(含标点)用同样 ruby 盒, baseline 一致 */
+  display: inline-flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  line-height: 1;
+  margin: 0 1px;
+}
+.story-text ruby > rt {
+  font-size: 0.5em;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1;
+  margin-bottom: 2px;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+}
+/* 标点的 ruby: 空 rt 强制占和有注音 rt 一样的高度, 让标点字面对齐汉字 */
+.story-text ruby.punct > rt {
+  color: transparent;
+  /* 空 rt 仍需占位: 给 min-height 保证和有注音的 rt 同高 (rt font-size 0.5em) */
+  min-height: 1em;
+  display: block;
+  line-height: normal;
+}
+/* 标点 span 不可点击, 没有 cursor:pointer 和 hover */
+.story-text .w.punct {
+  cursor: text;
+}
+.story-text .w.punct:hover {
+  background: transparent;
 }
 
 .end-pill {
