@@ -56,9 +56,13 @@ if title_match:
     title_text = title_match.group(1)
     title_chars = [c for c in title_text if not c.isspace() and c not in '：:']
 
-# 正文：去掉标题行和 --- 后内容
+# 正文：去掉标题行；保留所有 --- 分隔的段落。
+# 之前用 split('---')[0] 会丢掉第一个 --- 之后的所有内容，导致 ASR 对齐覆盖率不完整。
+# 现在 --- 也作为段落分隔符纳入正文（ref_chars 收集所有非空白字，与 slug.astro 一致）。
+# 同步去掉 markdown 加粗 **...** 标记，避免对齐出裸 * 字符。
 body_text = re.sub(r'^# .+\n', '', md)
-body_text = body_text.split('---')[0]
+body_text = re.sub(r'\n---\n', '\n\n', body_text)
+body_text = re.sub(r'\*\*', '', body_text)
 body_chars = [c for c in body_text if not c.isspace()]
 
 # 参考文本 = 标题字 + 正文字（标题在前，参与对齐；输出时按 title_len 截断丢弃）

@@ -27,10 +27,14 @@ try {
   const md = fs.readFileSync(mdPath, 'utf-8');
   storyParagraphs = md
     .replace(/^# .+\n/, '')
+    // markdown 横线分隔符 --- 不作为正文段落（与 align-asr.py 对齐规则一致）
+    .replace(/\n---\n/g, '\n\n')
+    // 去掉 markdown 加粗 **...**（保留中间文字，去掉标记符，与 align-asr.py 保持一致）
+    .replace(/\*\*/g, '')
     .trim()
     .split(/\n\n+/)
     .map((p) => p.trim())
-    .filter((p) => p.length > 0 && !p.startsWith('*'));
+    .filter((p) => p.length > 0 && p !== '---');
 } catch (e) {
   storyParagraphs = ['故事正文加载中…'];
 }
