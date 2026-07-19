@@ -340,7 +340,7 @@ export const characters: Character[] = [
   },
   {
     id: 'ailisi',
-    name: '艾丽斯',
+    name: '爱丽丝',
     role: '守护者',
     tags: ['守护者'],
     roleLabel: '花园守护者',
