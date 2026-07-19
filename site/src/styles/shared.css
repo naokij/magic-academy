@@ -369,8 +369,8 @@ main {
 /* 返回条: 桌面端隐藏 (有顶部 nav), 移动端在 sticky aside 顶部显示 */
 .story-back-bar { display: none; }
 @media (max-width: 720px) {
-  /* 手机版: 故事页隐藏顶部导航, 让 sticky 封面+播放器贴顶占满屏宽 */
-  .top-nav { display: none; }
+  /* 手机版: 仅故事详情页隐藏顶部导航, 让 sticky 封面+播放器贴顶占满屏宽 */
+  body.story-page .top-nav { display: none; }
   .story-cover-sticky {
     position: sticky;
     top: 0;
