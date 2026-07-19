@@ -24,6 +24,10 @@ const roles: { key: CharacterRole | 'all'; label: string }[] = [
   { key: '守护者', label: `守护者 · ${counts['守护者']}` },
 ];
 
+// char-tag 浅色背景组:这些 --c-* 亮度 ≥ 0.82,白字(var(--surface))对比度不足,改用深色 var(--fg)
+// (moon 月白 0.94 / blond 金发 0.88 / cream 奶油 0.88 / yellow 柠檬 0.85 / pink 樱粉 0.82 / gold 金 0.82)
+const lightTagColors = new Set(['moon', 'blond', 'cream', 'yellow', 'pink', 'gold']);
+
 // 出场集反查
 const epsByCharId: Record<string, { slug: string; title: string; number: number }[]> = {};
 for (const c of characters) {
@@ -92,7 +96,7 @@ const bannerStem = '/assets/banners/人物图鉴横版v2';
         >
           <div class="char-img">
             <CharacterPortrait portrait={c.portrait} name={c.name} />
-            <span class="char-tag" style={`background: var(--c-${c.color});`}>{c.role}</span>
+            <span class="char-tag" style={`background: var(--c-${c.color});${lightTagColors.has(c.color) ? ' color: var(--fg);' : ''}`}>{c.role}</span>
           </div>
           <div class="char-body">
             <div class="char-name">{c.name}</div>
