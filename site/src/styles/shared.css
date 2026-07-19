@@ -366,23 +366,36 @@ main {
     position: static;
   }
 }
+/* 返回条: 桌面端隐藏 (有顶部 nav), 移动端在 sticky aside 顶部显示 */
+.story-back-bar { display: none; }
 @media (max-width: 720px) {
-  /* 手机版: 封面图 + 播放器一起固定在屏幕顶部,边听边读时常驻 */
+  /* 手机版: 故事页隐藏顶部导航, 让 sticky 封面+播放器贴顶占满屏宽 */
+  .top-nav { display: none; }
   .story-cover-sticky {
     position: sticky;
-    top: var(--story-aside-top, 0px); /* 由 JS 测量 nav 高度后动态设置 */
+    top: 0;
     z-index: 20;
     gap: 0;
     margin: 0 -16px;
-    padding: 12px 16px 14px;
+    padding: 10px 16px 14px;
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     box-shadow: 0 4px 12px oklch(28% 0.06 305 / 0.08);
-    align-items: center; /* 封面图居中,避免正方形占满屏宽 */
   }
-  /* 封面图保持 1:1 正方形,限制最大宽度避免占满屏 */
+  /* 返回条: 补偿隐藏 nav 的可达性, 常驻 sticky 区顶部 */
+  .story-back-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0 8px;
+    font-size: 14px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .story-back-bar:active { color: var(--fg); }
+  /* 封面图保持 1:1 正方形,占满屏宽 */
   .story-cover-sticky .story-cover {
-    width: clamp(160px, 40vw, 200px);
+    width: 100%;
     border-radius: var(--r-md);
     box-shadow: none;
   }

@@ -149,6 +149,10 @@ const wallCodes = [
   <div class="story-layout fade-in" data-od-id="story-body">
     <!-- 左侧：固定封面 + 音频播放器 -->
     <aside class="story-cover-sticky" data-od-id="story-aside">
+      <a class="story-back-bar" href="/story-list" aria-label="返回故事列表">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <span>故事列表</span>
+      </a>
       <div class="story-cover">
         <ResponsiveImage
           src={ep.cover}
@@ -287,20 +291,6 @@ const wallCodes = [
       const storyText = document.getElementById('story-text')!;
       const paragraphs = Array.from(storyText.querySelectorAll<HTMLElement>('p.story-paragraph'));
       const playerRoot = document.querySelector('.audio-player') as HTMLElement;
-
-      // 移动端: 测量 nav 高度,设给 sticky aside 的 top,避免被 nav 盖住
-      const navEl = document.querySelector('.top-nav');
-      const asideSticky = document.querySelector('.story-cover-sticky') as HTMLElement | null;
-      function syncAsideTop() {
-        if (!navEl || !asideSticky) return;
-        const h = navEl.getBoundingClientRect().height;
-        asideSticky.style.setProperty('--story-aside-top', h + 'px');
-      }
-      syncAsideTop();
-      window.addEventListener('resize', syncAsideTop);
-      // nav 字体异步加载可能导致高度变化,延迟再测一次
-      setTimeout(syncAsideTop, 300);
-      if (document.fonts) document.fonts.ready.then(syncAsideTop);
 
       const speeds = [0.8, 1, 1.25, 1.5];
       let speedIdx = 1;
