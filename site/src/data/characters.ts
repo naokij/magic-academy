@@ -17,6 +17,7 @@ export interface Character {
   bio: string;           // 人物小传
   portrait: string;      // 原图 URL '/assets/characters/...'
   defaultPortrait?: string;
+  portraits?: string[];  // 多张立绘(可选); 默认用 portrait, 填了就在弹窗里可切换
   debut: string;         // 首出场集 slug '1-开学第一天'
 }
 
@@ -122,7 +123,7 @@ export const characters: Character[] = [
     power: '海魔法 · 蓝宝水晶球杖',
     bio: '8 岁中级生,亮亮的同桌。银蓝色长卷发,深海军蓝衣服,紫蓝色眼睛。持蓝宝水晶球杖,唱歌很好听,亮亮喜欢看他唱歌的样子。喜欢和小天天比谁的衣服更蓝。',
     portrait: '/assets/characters/小海洋.png',
-    debut: '1-开学第一天',
+    debut: '2-晴天娃娃不见了',
   },
   {
     id: 'xiaotianxin',
@@ -217,10 +218,11 @@ export const characters: Character[] = [
     age: '16 岁',
     color: 'sky',
     colorVar: 'var(--c-sky)',
-    power: '云魔法 · 浅蓝心形杖',
-    bio: '16 岁,浅蓝色长卷发,戴粉玫瑰花饰,蓝色眼睛。穿浅蓝色外套。亮亮的另一同桌。喜欢和小海洋比谁的衣服更蓝。',
+    power: '天气魔法 · 浅蓝心形杖',
+    bio: '16 岁,浅蓝色长卷发,戴粉玫瑰花饰,蓝色眼睛。穿浅蓝色外套。亮亮的另一同桌。喜欢和小海洋比谁的衣服更蓝。她的晴天娃娃是天气魔法的伙伴——找不到娃娃就会一直下雨。',
     portrait: '/assets/characters/小天天.png',
-    debut: '1-开学第一天',
+    portraits: ['/assets/characters/小天天.png', '/assets/characters/小天天拿晴天娃娃.png'],
+    debut: '2-晴天娃娃不见了',
   },
   {
     id: 'xiaokunchong',
