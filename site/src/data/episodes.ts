@@ -53,7 +53,7 @@ export const episodes: Episode[] = [
     cover: '/assets/covers/第二集.jpg',
     audio: '/audio/2-晴天娃娃不见了.mp3',
     color: 'pink',
-    excerpt: '早上醒来，外面在下雨——可是昨天还是大晴天！原来小天天找不到她的晴天娃娃了，她一哭，天就下雨。晶晶用水晶保护罩罩住城堡，亮亮用亮光魔法照亮大家，到处帮忙寻找。没想到是小海洋偷偷拿走了娃娃，想给小天天一个生日惊喜……',
+    excerpt: '早上醒来，外面在下雨——可是昨天还是大晴天呀！姐姐指着雨说："这个颜色，和昨晚走廊的蓝光一模一样。" 我们去找那个"下雨的人"——原来是小天天。晶晶伸出手指，"叮"的一声，撑起了水晶保护罩；亮亮举起星星法杖，把城堡照得亮堂堂。可是雨还是一直下。晴天娃娃到底去哪了呢？',
     intro: '今天是我在魔法学院上学的第二天。早上醒来，外面在下雨——可是昨天还是大晴天呀！',
     charactersInScene: ['jingjing', 'liangliang', 'xiaotiantian', 'xiaohaiyang', 'xiaotongtong', 'xiaotianxin', 'xiaotiandian', 'xiaohaimian', 'xiaokunchong', 'ailisi'],
   },
