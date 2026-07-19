@@ -349,7 +349,7 @@ export const characters: Character[] = [
     colorVar: 'var(--c-red)',
     power: '花园 · 让植物生长',
     bio: '国家守护者之一,守护花园。粉发双马尾,背生粉色翅膀(花园精灵),穿粉白花瓣礼服,持心形杖。手心放粉光。视觉是守护者中最粉的一个。',
-    portrait: '/assets/characters/艾丽斯.jpg',
+    portrait: '/assets/characters/爱丽丝.jpg',
     debut: '1-开学第一天',
   },
   {
