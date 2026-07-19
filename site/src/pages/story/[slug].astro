@@ -288,6 +288,20 @@ const wallCodes = [
       const paragraphs = Array.from(storyText.querySelectorAll<HTMLElement>('p.story-paragraph'));
       const playerRoot = document.querySelector('.audio-player') as HTMLElement;
 
+      // 移动端: 测量 nav 高度,设给 sticky aside 的 top,避免被 nav 盖住
+      const navEl = document.querySelector('.top-nav');
+      const asideSticky = document.querySelector('.story-cover-sticky') as HTMLElement | null;
+      function syncAsideTop() {
+        if (!navEl || !asideSticky) return;
+        const h = navEl.getBoundingClientRect().height;
+        asideSticky.style.setProperty('--story-aside-top', h + 'px');
+      }
+      syncAsideTop();
+      window.addEventListener('resize', syncAsideTop);
+      // nav 字体异步加载可能导致高度变化,延迟再测一次
+      setTimeout(syncAsideTop, 300);
+      if (document.fonts) document.fonts.ready.then(syncAsideTop);
+
       const speeds = [0.8, 1, 1.25, 1.5];
       let speedIdx = 1;
 
@@ -341,32 +355,41 @@ const wallCodes = [
         return -1;
       }
 
+      // 滚动容器: 本项目 html,body{height:100%} 导致 body 成为滚动容器,
+      // document.scrollingElement(window.scrollY) 恒为 0, 必须直接操作 body
+      const scrollRoot = (document.body.scrollHeight > document.body.clientHeight ? document.body : (document.scrollingElement as HTMLElement)) || document.documentElement;
+      function getScrollTop() { return scrollRoot.scrollTop || 0; }
+      function scrollToY(top: number) { scrollRoot.scrollTop = top; }
+
       function highlight(t: number) {
         const idx = findWordIdx(t);
         if (idx === activeIdx) return;
         if (activeIdx >= 0 && wordEls[activeIdx]) wordEls[activeIdx].el.classList.remove('is-active');
         if (idx >= 0) {
           wordEls[idx].el.classList.add('is-active');
-          // 滚动跟随: 用 offsetTop (静态布局值) 避免 reflow, 最多每秒 1 次
+          // 滚动跟随: 最多每秒 1 次
           const now = Date.now();
           if (now - lastScrollTime > 1000) {
             const el = wordEls[idx].el;
-            const elTop = el.offsetTop;
-            const viewTop = window.scrollY;
+            // 用 getBoundingClientRect 算视口绝对位置 (offsetTop 在嵌套布局里相对 offsetParent, 不可靠)
+            const rect = el.getBoundingClientRect();
+            const viewTop = getScrollTop();
+            const elViewportTop = rect.top;  // 字相对视口顶的位置
+            const elDocTop = rect.top + viewTop;  // 字相对文档顶的位置
             if (isMobile) {
+              // 移动端: 字滚到 aside 底部下方 24px (避开 sticky 封面+播放器)
               const target = Math.min(asideBottom + 24, vh - 120);
-              const elViewportTop = elTop - viewTop;
               if (Math.abs(elViewportTop - target) > 30) {
                 lastScrollTime = now;
-                window.scrollTo({ top: elTop - target, behavior: 'auto' });
+                scrollToY(elDocTop - target);
               }
             } else {
+              // 桌面端: 字在视口可见区域内不滚, 接近边缘才滚到中间
               const margin = 120;
-              const elViewportTop = elTop - viewTop;
               const elViewportBottom = elViewportTop + (el.offsetHeight || 24);
               if (elViewportTop < margin || elViewportBottom > vh - margin) {
                 lastScrollTime = now;
-                window.scrollTo({ top: elTop - vh * 0.5, behavior: 'auto' });
+                scrollToY(elDocTop - vh * 0.5);
               }
             }
           }

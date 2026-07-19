@@ -366,6 +366,36 @@ main {
     position: static;
   }
 }
+@media (max-width: 720px) {
+  /* 手机版: 封面图 + 播放器一起固定在屏幕顶部,边听边读时常驻 */
+  .story-cover-sticky {
+    position: sticky;
+    top: var(--story-aside-top, 0px); /* 由 JS 测量 nav 高度后动态设置 */
+    z-index: 20;
+    gap: 0;
+    margin: 0 -16px;
+    padding: 12px 16px 14px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 12px oklch(28% 0.06 305 / 0.08);
+  }
+  /* 封面图压扁成横版,避免占满屏 */
+  .story-cover-sticky .story-cover {
+    border-radius: var(--r-md);
+    aspect-ratio: 16 / 9;
+    box-shadow: none;
+  }
+  .story-cover-sticky .story-cover img {
+    aspect-ratio: 16 / 9;
+  }
+  .story-cover-sticky .story-cover::after { inset: 6px; }
+  /* 播放器紧贴封面下方,去掉外层卡片间距 */
+  .story-cover-sticky .audio-player {
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: var(--r-md);
+  }
+}
 .story-cover {
   border-radius: var(--r-lg);
   overflow: hidden;
