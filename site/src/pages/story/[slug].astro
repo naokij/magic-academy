@@ -254,8 +254,14 @@ const wallCodes = [
       )}
 
       <div class="end-pill" data-od-id="end-pill">
-        故事的第一集完,请听第二集
-        <div style="margin-top: 6px; font-size: 13px; color: var(--muted);">— 小橘子 · 口述 —</div>
+        <span class="end-title">故事的第{['一','二','三','四','五','六','七','八','九','十'][ep.number - 1] || ep.number}集完</span>
+        {ep.next ? (
+          <a href={`/story/${ep.next.slug}`} class="next-link">
+            请听第{['一','二','三','四','五','六','七','八','九','十'][ep.number] || ep.number + 1}集
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        ) : ''}
+        <span class="end-credit">— 小橘子 · 口述 —</span>
       </div>
 
       <div class="flourish" aria-hidden="true">
@@ -533,6 +539,46 @@ const wallCodes = [
     }
     .story-text p.story-paragraph:hover {
       background: oklch(96% 0.03 80 / 0.6);
+    }
+
+    /* end-pill 内部布局 */
+    .end-title {
+      display: block;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .next-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      background: var(--accent);
+      color: #fff;
+      border-radius: var(--r-full, 999px);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px oklch(60% 0.15 70 / 0.2);
+    }
+    .next-link:hover {
+      background: color-mix(in oklch, var(--accent) 80%, #000);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px oklch(60% 0.15 70 / 0.25);
+    }
+    .next-link svg {
+      transition: transform 0.2s;
+    }
+    .next-link:hover svg {
+      transform: translateX(3px);
+    }
+    .end-credit {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
     }
   </style>
 </Base>
