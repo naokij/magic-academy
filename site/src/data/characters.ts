@@ -33,8 +33,9 @@ export const characters: Character[] = [
     color: 'pink',
     colorVar: 'var(--c-pink)',
     power: '光魔法 · 变出小花和小光球',
-    bio: '故事的第一人称讲述者,4 岁妹妹。金色蓬松短发扎双丸子头(白花球发卡),琥珀红大眼睛。穿浅绿色斗篷配米黄色连衣裙,喜欢说"我来我来!"和"哇——"。口头禅"嘿嘿",喜欢和姐姐跳舞画画。',
+    bio: '故事的第一人称讲述者,4 岁妹妹。金色蓬松短发扎双丸子头(白花球发卡),琥珀红大眼睛。穿浅绿色斗篷配米黄色连衣裙,喜欢说"我来我来!"和"哇——"。口头禅"嘿嘿",喜欢和姐姐跳舞画画。她有一只全黑的玩偶猫叫黑黑,会"躲猫猫"魔法。',
     portrait: '/assets/characters/晶晶妹妹.png',
+    portraits: ['/assets/characters/晶晶妹妹.png', '/assets/characters/晶晶抱黑黑.png'],
     debut: '1-开学第一天',
   },
   {
@@ -47,8 +48,9 @@ export const characters: Character[] = [
     color: 'blond',
     colorVar: 'var(--c-blond)',
     power: '云朵魔法 · 变出棉花糖一样的小云',
-    bio: '晶晶的姐姐,温柔稳重,5 岁。金色中短发,翠绿色大眼睛,头顶小蝴蝶结。穿深蓝色英伦学院风制服(深蓝外套 + 蓝白格纹裙 + 白星辰披风 + 棕靴),手持金色星星法杖(杖顶还有水晶球和小挎包)。口头禅"晶晶,跟着姐姐!"。',
+    bio: '晶晶的姐姐,温柔稳重,5 岁。金色中短发,翠绿色大眼睛,头顶小蝴蝶结。穿深蓝色英伦学院风制服(深蓝外套 + 蓝白格纹裙 + 白星辰披风 + 棕靴),手持金色星星法杖(杖顶还有水晶球和小挎包)。口头禅"晶晶,跟着姐姐!"。她有一只三花玩偶猫叫奶 ki,会"变软变漂亮"魔法。',
     portrait: '/assets/characters/亮亮姐姐.png',
+    portraits: ['/assets/characters/亮亮姐姐.png', '/assets/characters/亮亮抱奶ki.png'],
     debut: '1-开学第一天',
   },
 
@@ -135,8 +137,9 @@ export const characters: Character[] = [
     color: 'rose',
     colorVar: 'var(--c-rose)',
     power: '甜点魔法 · 心形粉色杖',
-    bio: '9 岁,晶晶的另一个同桌。粉红色头发 + 奶黄色衣服,玫红色眼睛。持心形粉色杖。最喜欢偷偷吃甜食,但总是被小包子老师发现。和小玫瑰玩装扮游戏。',
+    bio: '9 岁,晶晶的另一个同桌。粉红色头发 + 奶黄色衣服,玫红色眼睛。持心形粉色杖。最喜欢偷偷吃甜食,但总是被小包子老师发现。和小玫瑰玩装扮游戏。她的甜心娃娃是季节调色魔法的伙伴——一滴眼泪就会让春天褪色成秋天。',
     portrait: '/assets/characters/小甜心.png',
+    portraits: ['/assets/characters/小甜心.png', '/assets/characters/小甜心抱甜心娃娃.png'],
     debut: '1-开学第一天',
   },
   {
