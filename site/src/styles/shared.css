@@ -1,28 +1,23 @@
 /* ============================================================
    Magic Academy · 共享样式
-   暖金 + 粉蓝紫 + 米黄纸页 · 字魂书雅宋（display）+ 系统黑体（body）
+   暖金 + 粉蓝紫 + 米黄纸页 · 猫啃网风雅宋（display）+ 系统黑体（body）
    ============================================================ */
 
-/* 字魂书雅宋 · 本地 TTF · 三档字重 Regular / Medium / Bold
-   · 宋体衬线基线 + 笔画末端细节，与 banner「人物图鉴」字风一致
+/* 猫啃网风雅宋 (MaoKenWangFengYaSong) · SIL OFL 1.1 开源授权
+   · Copyright 2020-2025 MaoKenWangFengYaSong Font Project Authors
+   · Design: 新愚公 x 猫啃网 · redistributed by maoken.com
+   · 基于 Swei Spring 修改，雅致有力，设计感强
    · font-display: swap · 加载期间显示 fallback 字体，加载完自动切换 */
 @font-face {
-  font-family: "ZiHun ShuYa Song";
-  src: url("/fonts/zi-hun-shu-ya-song-Regular.ttf") format("truetype");
+  font-family: "Display Song";
+  src: url("/fonts/display-song-bold.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: "ZiHun ShuYa Song";
-  src: url("/fonts/zi-hun-shu-ya-song-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "ZiHun ShuYa Song";
-  src: url("/fonts/zi-hun-shu-ya-song-Bold.ttf") format("truetype");
+  font-family: "Display Song";
+  src: url("/fonts/display-song-bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -55,11 +50,10 @@
   --c-red:       oklch(58% 0.20 25);    /* 守护者 · 守卫红 */
 
   /* 字体栈 */
-  /* display: 字魂书雅宋 → Noto Serif SC（Google Fonts）→ 系统宋体 → serif
-   · 其他字体（display）保持不变 —— 字魂书雅宋衬线 + Noto Serif SC CDN 兜底
-   · body: 不用 Noto Sans SC（Google 那个），直接用系统黑体（PingFang SC / 微软雅黑） */
-  --font-display: "ZiHun ShuYa Song", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
-  --font-display-elegant: "ZiHun ShuYa Song", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  /* display: 猫啃网风雅宋（Bold 字重，400/700 同一文件）→ Noto Serif SC → 系统宋体
+   · body: 直接用系统黑体（PingFang SC / 微软雅黑），不额外加载 CDN 字体 */
+  --font-display: "Display Song", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --font-display-elegant: "Display Song", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
   --font-body: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", system-ui, -apple-system, sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
@@ -104,17 +98,13 @@ rt {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  /* 字魂书雅宋三档字重：
-     · h1 (page 标题) Medium 500 · 表现力充足，衬线宋体大字不显轻飘
-     · h2 section 标题 Medium 500 · 与 h1 同重
-     · h3 卡片标题 Medium 500 · 与 section 一致
-     · hero / 导航加重场景单独切到 Bold 700 */
-  font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: 0.04em;
-  color: var(--fg);
-}
+	  font-family: var(--font-display);
+	  /* 猫啃网风雅宋（唯一 Bold 字重，400/700 共用同一文件） */
+	  font-weight: 500;
+	  line-height: 1.25;
+	  letter-spacing: 0.08em;
+	  color: var(--fg);
+	}
 h1 { font-size: clamp(32px, 4vw, 48px); }
 h2 { font-size: clamp(24px, 3vw, 32px); }
 h3 { font-size: clamp(20px, 2.4vw, 24px); }

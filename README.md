@@ -10,7 +10,7 @@
 magic-academy/
 ├── assets/      原图(25 角色 + 13 场景 + 6 横幅 + 1 封面)
 ├── audio/       配音 mp3(qiaopi_mengmei 俏皮萌妹音色)
-├── public/      字体源(字魂书雅宋 3 TTF)
+├── public/      字体源(猫啃网风雅宋 Bold TTF)
 ├── stories/     故事正文 markdown
 ├── docs/        系列设定 + 原始口述
 └── site/        Astro 7 静态站
@@ -57,3 +57,11 @@ npm run build    # 一键构建(产物在 site/dist/)
 - **不可**:商业使用
 
 详细条款见 [LICENSE](./LICENSE) 全文。
+
+### 字体授权
+
+展示字体 **猫啃网风雅宋**（MaoKenWangFengYaSong）使用 [SIL Open Font License 1.1](./public/fonts/License.txt) 授权。
+- Copyright 2020-2025 MaoKenWangFengYaSong Font Project Authors
+- Design: 新愚公 x 猫啃网（[maoken.com](https://www.maoken.com)）
+- 基于 Swei Spring 修改
+- 可免费商用、嵌入、修改、再分发（需附带 OFL 协议）
