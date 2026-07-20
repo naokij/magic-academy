@@ -38,7 +38,7 @@ export const episodes: Episode[] = [
     audio: '/audio/1-开学第一天.mp3',
     banner: '/assets/banners/城堡玩耍.jpg',
     color: 'gold',
-    excerpt: '晶晶是初级,亮亮是中级 —— 姐妹俩刚来到魔法岛,兴奋得不行。台风「断剑」吹走了防护罩,四个守护者在守护小岛。食堂的影子会漂浮,午睡醒来老师发了点心,然后是魔法课。',
+    excerpt: '晶晶和亮亮都是初级班新生 —— 姐妹俩刚来到魔法岛,兴奋得不行。台风「断剑」吹走了防护罩,四个守护者在守护小岛。食堂的影子会漂浮,午睡醒来老师发了点心,然后是魔法课。',
     intro: '我叫晶晶,今年四岁。今天,是我和姐姐亮亮去魔法学院上学的第一天!',
     charactersInScene: ['jingjing', 'liangliang', 'xiaotongtong', 'xiaobaozi', 'xiaotianxin', 'xiaotiandian', 'xiaohaimian', 'xiaoyueliang', 'xiaoyueguang', 'xiaoguangming', 'aolia', 'aolian', 'ailisi', 'taliya'],
     next: { title: '第二集 晴天娃娃不见了', status: 'soon', slug: '2-晴天娃娃不见了' },
