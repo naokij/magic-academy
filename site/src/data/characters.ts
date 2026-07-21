@@ -1,6 +1,6 @@
 // 魔法学院 · 角色图鉴
 // 数据真值源: 仓库根 docs/系列设定.md
-// 视觉锚定:   仓库根 assets/characters/ 下 25 张立绘
+// 视觉锚定:   仓库根 assets/characters/ 下 27 张立绘
 
 export type CharacterRole = '主角' | '优等生' | '同学' | '老师' | '守护者';
 
@@ -113,6 +113,21 @@ export const characters: Character[] = [
   },
 
   // ========== 同学组(中级生 + 高级生) ==========
+  {
+    id: 'momo',
+    name: '茉茉',
+    role: '同学',
+    tags: ['同学'],
+    roleLabel: '同学 · 4 岁',
+    age: '4 岁',
+    color: 'violet',
+    colorVar: 'var(--c-violet)',
+    power: '石头魔法(待揭晓) · 石头魔杖',
+    bio: '4 岁初级生,第四集登场的新同学,晶晶的新同桌。紫罗兰色双马尾卷发,琥珀色大眼睛,穿深绿色斗篷配绿格裙。第一天入学想家,一整天不敢说话,被小甜心偷吃甜甜圈逗笑。手里的小包子老师送的石头魔杖灰灰的,"在睡觉",等小主人认主;怀里抱着独角兽玩偶小彩虹(白身子、粉卷毛、金角)。她的房间夜里会透出茉莉色的光。',
+    portrait: '/assets/characters/茉茉.png',
+    portraits: ['/assets/characters/茉茉.png', '/assets/characters/茉茉抱小彩虹.png'],
+    debut: '4-新同学茉茉',
+  },
   {
     id: 'xiaohaiyang',
     name: '小海洋',
