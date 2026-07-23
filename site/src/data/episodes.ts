@@ -101,6 +101,21 @@ export const episodes: Episode[] = [
     excerpt: '班里又来了新同学——安雨,红棕色双马尾,头上有金色小龙角,身后还有一条长长的龙尾巴。她五岁就一板一眼:"上学,不可以迟到。"防光罩下,她展开红金色的龙族之翼;食堂里,小海绵阿姨特地做了加麦片的龙粮。小包子老师送她龙珠魔杖,可魔杖呼噜呼噜一直在睡觉——它还没认出这里是新家。晚上,门缝底下透进来一丝红色的微光。',
     intro: '我叫晶晶,今年四岁。今天是我在魔法学院上学的第五天。',
     charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaotaiyang', 'xiaokunchong', 'xiaobaozi', 'xiaohaimian', 'xiaoman'],
+    next: { title: '第六集 魔杖醒了', status: 'online', slug: '6-魔杖醒了' },
+  },
+  {
+    slug: '6-魔杖醒了',
+    number: 6,
+    title: '第六集 魔杖醒了',
+    subtitle: '一起睡，一起亮',
+    duration: '约 9 分 41 秒',
+    status: 'online',
+    cover: '/assets/covers/第六集.jpg',
+    audio: '/audio/6-魔杖醒了.mp3',
+    color: 'pink',
+    excerpt: '一大早，安雨和茉茉在花园练习魔杖——石头魔杖"叮"地亮成茉莉色，龙珠魔杖"嗡"地亮成红色，两根魔杖真的一起睡、一起亮了！她们抱着各自的娃娃，比了一个爱心。可是，魔杖醒了，魔法是什么呢？中午，桌子又"咕噜咕噜"把她们俩拼到了一起；晚上，四个房间的门缝底下，透进来一丝粉色的光，比任何一次都粉、都亮。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第六天。',
+    charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaobaozi', 'xiaotianxin', 'xiaotiandian', 'xiaotaiyang'],
   },
 ];
 
