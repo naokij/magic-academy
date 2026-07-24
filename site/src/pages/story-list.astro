@@ -13,11 +13,11 @@ const upcoming = total - online;
     <span class="eyebrow">所有剧集</span>
     <h1 style="margin-top: 8px; margin-bottom: 12px;">晶晶和亮亮的故事</h1>
     <p class="text-muted" style="max-width: 60ch;">
-      按顺序听 —— 每集大约 8~12 分钟。第 1 集已上线,后续剧集剧本正在创作中。
+      按顺序听 —— 每集大约 10~14 分钟。已上线 {online} 集，新的故事正在创作中。
     </p>
     <div class="row" style="margin-top: 16px;">
       <span class="chip">已上线 · {online} 集</span>
-      <span class="chip">创作中 · {upcoming} 集</span>
+      {upcoming > 0 && <span class="chip">创作中 · {upcoming} 集</span>}
       <span class="chip">守护者故事线</span>
     </div>
   </section>

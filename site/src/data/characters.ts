@@ -283,6 +283,7 @@ export const characters: Character[] = [
     power: '光魔法 · 太阳心形杖',
     bio: '9 岁,橙金色双马尾,金橙色眼睛,身上有彩虹徽章和彩虹鞋带。持太阳心形杖。喜欢跟小光明在一起,喜欢跟小光明比谁的衣服更黄。',
     portrait: '/assets/characters/小太阳.png',
+    portraits: ['/assets/characters/小太阳.png', '/assets/characters/小太阳抱太阳娃娃.jpg'],
     debut: '1-开学第一天',
   },
 

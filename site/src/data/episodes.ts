@@ -116,6 +116,21 @@ export const episodes: Episode[] = [
     excerpt: '一大早，安雨和茉茉在花园练习魔杖——石头魔杖"叮"地亮成茉莉色，龙珠魔杖"嗡"地亮成红色，两根魔杖真的一起睡、一起亮了！她们抱着各自的娃娃，比了一个爱心。可是，魔杖醒了，魔法是什么呢？中午，桌子又"咕噜咕噜"把她们俩拼到了一起；晚上，四个房间的门缝底下，透进来一丝粉色的光，比任何一次都粉、都亮。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第六天。',
     charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaobaozi', 'xiaotianxin', 'xiaotiandian', 'xiaotaiyang'],
+    next: { title: '第七集 小太阳的生日', status: 'online', slug: '7-小太阳的生日' },
+  },
+  {
+    slug: '7-小太阳的生日',
+    number: 7,
+    title: '第七集 小太阳的生日',
+    subtitle: '小太阳的生日惊喜',
+    duration: '约 10 分 38 秒',
+    status: 'online',
+    cover: '/assets/covers/第七集.jpg',
+    audio: '/audio/7-小太阳的生日.mp3',
+    color: 'yellow',
+    excerpt: '今天是小太阳的生日！小光明要送她一个太阳娃娃，请大家一起保密。感知课上，晶晶心里"叮"地长出一颗小水晶，把蹦蹦跳跳的秘密封住了。安雨主做的太阳娃娃黄裙子、双马尾，和小太阳长得一模一样；小光明用光明魔法一裹——光球太激动，带着娃娃满教室飞，追得他头都要掉啦！下午，小甜点变出太阳蛋糕，还专门给小暗暗留了一块黑暗蛋糕。晚上，门缝底下透进来一丝金色的、暖暖的光。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第七天。',
+    charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaotaiyang', 'xiaoguangming', 'xiaoan', 'xiaotiandian', 'xiaobaozi', 'xiaohaimian'],
   },
 ];
 
