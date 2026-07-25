@@ -131,6 +131,21 @@ export const episodes: Episode[] = [
     excerpt: '今天是小太阳的生日！小光明要送她一个太阳娃娃，请大家一起保密。感知课上，晶晶心里"叮"地长出一颗小水晶，把蹦蹦跳跳的秘密封住了。安雨主做的太阳娃娃黄裙子、双马尾，和小太阳长得一模一样；小光明用光明魔法一裹——光球太激动，带着娃娃满教室飞，追得他头都要掉啦！下午，小甜点变出太阳蛋糕，还专门给小暗暗留了一块黑暗蛋糕。晚上，门缝底下透进来一丝金色的、暖暖的光。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第七天。',
     charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaotaiyang', 'xiaoguangming', 'xiaoan', 'xiaotiandian', 'xiaobaozi', 'xiaohaimian'],
+    next: { title: '第八集 安雨的棍子', status: 'online', slug: '8-安雨的棍子' },
+  },
+  {
+    slug: '8-安雨的棍子',
+    number: 8,
+    title: '第八集 安雨的棍子',
+    subtitle: '棍子原来是支笛子',
+    duration: '约 12 分 45 秒',
+    status: 'online',
+    cover: '/assets/covers/第八集.jpg',
+    audio: '/audio/8-安雨的棍子.mp3',
+    color: 'red',
+    excerpt: '音乐课上，安雨的龙珠魔杖"咔"地一声——龙嘴张开，魔杖变成了一支红色的小笛子！可是安雨把每个音都吹得端端正正，像背书一样，一片叶子都不动。直到她在花园里想起很远很远的家，吹出那首歪歪的龙族摇篮曲——喷泉跳起舞，影子排起队，连小甜心偷藏的甜甜圈都跳出来转圈圈。原来棍子不是坏掉了，棍子是想家了。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第八天。',
+    charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaobaozi', 'xiaohaiyang', 'xiaotaiyang', 'xiaokunchong', 'xiaotianxin', 'xiaotiandian', 'xiaohaimian'],
   },
 ];
 
