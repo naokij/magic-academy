@@ -146,6 +146,21 @@ export const episodes: Episode[] = [
     excerpt: '音乐课上，安雨的龙珠魔杖"咔"地一声——龙嘴张开，魔杖变成了一支红色的小笛子！可是安雨把每个音都吹得端端正正，像背书一样，一片叶子都不动。直到她在花园里想起很远很远的家，吹出那首歪歪的龙族摇篮曲——喷泉跳起舞，影子排起队，连小甜心偷藏的甜甜圈都跳出来转圈圈。原来棍子不是坏掉了，棍子是想家了。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第八天。',
     charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaobaozi', 'xiaohaiyang', 'xiaotaiyang', 'xiaokunchong', 'xiaotianxin', 'xiaotiandian', 'xiaohaimian'],
+    next: { title: '第九集 茉莉朵朵开', status: 'online', slug: '9-茉莉朵朵开' },
+  },
+  {
+    slug: '9-茉莉朵朵开',
+    number: 9,
+    title: '第九集 茉莉朵朵开',
+    subtitle: '茉茉的石头会开花',
+    duration: '约 11 分 05 秒',
+    status: 'online',
+    cover: '/assets/covers/第九集.jpg',
+    audio: '/audio/9-茉莉朵朵开.mp3',
+    color: 'moon',
+    excerpt: '半夜，晶晶被"骨碌骨碌"的声音吵醒——茉茉的石头魔杖自己滚出了房间，滚过的地方留下一道茉莉色的光！晶晶敲墙叫起姐姐（敲墙暗号里可没有"快起床"），安雨早就穿戴整齐。孩子们跟着光走进半夜的花园，小满保安远远护送："放心，有我在！"石子路尽头，茉茉抱着小彩虹——原来魔杖要让石头开花，可是它只认茉茉的声音。晶晶扯着嗓子喊也没用，有些课，要自己上。直到茉茉说出那句最大声的话，整条石子路，茉莉朵朵开！',
+    intro: '我叫晶晶，今年四岁。现在，是我在魔法学院的……半夜。',
+    charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaoman'],
   },
 ];
 
