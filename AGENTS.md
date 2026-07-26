@@ -58,6 +58,18 @@ npm run sync         # 只跑资源同步,不启 dev server
 
 发布上线:`status: 'soon'` → `'online'` → `npm run build` → commit → push。`.mimocode/command/publish-episode.md` 有半自动流程(注意该命令是跨项目通用的,里面提到的 `faries-vs-witch` / `website/` 路径不适用于本仓库,本仓库路径是 `site/src/data/episodes.ts`)。
 
+**新增一集的完整发布清单(按序执行,每步完成再打勾):**
+
+1. `stories/N-标题.md` 正文(遵守下方 markdown 写作规范)
+2. 配音:`mmx speech synthesize` → `audio/N-标题.mp3`
+3. 字级高亮:`site/scripts/asr.sh` + `align-asr.py` → `site/data/asr/{slug}.aligned.json`(对齐覆盖率应 100%)
+4. 封面:**只出提示词,不执行任何生图 skill**——用户拿提示词手动用 AI 工具生成、提供图片后,助手拷入 `assets/covers/第N集.jpg`(中文大写集数名,1920×1920 正方形 Q 版绘本风,画风锚定前集封面)
+5. `episodes.ts`:新条目 `status:'online'` + 上一集 `next` 指向本集(`duration` 不手写,build 时脚本回写)
+6. **同步检查 `characters.ts`**(易漏!):本集登场角色的 `power`/`bio` 是否落后于剧情——新魔法揭晓、魔杖新形态、新道具、新关系、弧线收拢都要补进对应角色条目(第 8/9 集曾漏更,后补 commit 76a59fd)
+7. `docs/系列设定.md` 版本 +1:新魔法专节(4.x)+ 涉及角色行 + 3.x 相关条目 + 第六节沿革记录;未填的伏笔明确挂账
+8. `npm run build` 验证:新路由生成、封面多档变体、音频同步、页数 +1
+9. commit → push(git 操作每次都要先问用户)
+
 ## 不要手改 / 不要提交(gitignore)
 
 这些是 sync 生成物,改了也会被覆盖,**真值源在仓库根**:
