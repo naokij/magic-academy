@@ -176,6 +176,21 @@ export const episodes: Episode[] = [
     excerpt: '全宿舍睡过头，连"上学不可以迟到"的安雨都迟到了！茉茉说，小彩虹早上不在她怀里——它在窗台上，卷毛还乱了一撮。难道小彩虹活了？可是只要有人看，它就一动不动：瞪眼睛比赛输了，甜甜圈陷阱里的甜甜圈不见了，小甜心大喊"这次真的不是我！"影子说，它昨天半夜在走廊跑了三圈——它不怕影子，它怕人。傍晚的花园里，茉茉说出真心话，安雨吹起歪歪的摇篮曲，小彩虹终于站了起来，用金色的角轻轻碰了碰石头魔杖……晚上，晚安的队伍里，多了一声"叮"。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十天。',
     charactersInScene: ['jingjing', 'liangliang', 'anyu', 'momo', 'xiaobaozi', 'xiaoman', 'xiaotianxin', 'xiaotiandian'],
+    next: { title: '第十一集 魔法学院的小不点', status: 'online', slug: '11-魔法学院的小不点' },
+  },
+  {
+    slug: '11-魔法学院的小不点',
+    number: 11,
+    title: '第十一集 魔法学院的小不点',
+    subtitle: '点点自己来！',
+    duration: '约 16 分 04 秒',
+    status: 'online',
+    cover: '/assets/covers/第十一集.jpg',
+    audio: '/audio/11-魔法学院的小不点.mp3',
+    color: 'sky',
+    excerpt: '新同学点点只有三岁，是魔法学院最小最小的学生。她第一天上学就迟到了——不是她的错，对三岁的小朋友来说，这条走廊太长太长啦，全班一起出门去接她。晶晶抢着"我来我来"，点点只有一句口头禅："点点。自己来。"楼梯把台阶变矮，桌子变出小矮椅，餐台矮下一截，连甜甜圈都自己飞低——魔法学院会弯下腰来抱你。晚上，晚安的队伍第一次跑到第五间房，点点回敲了数不清的好多好多下——大家一致通过新暗号：好多好多下，就是"点点很开心"。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十一天。',
+    charactersInScene: ['jingjing', 'liangliang', 'diandian', 'anyu', 'momo', 'xiaobaozi', 'xiaoman', 'xiaohaimian', 'xiaotianxin', 'xiaotiandian'],
   },
 ];
 
