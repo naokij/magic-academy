@@ -311,9 +311,10 @@ export const characters: Character[] = [
     age: '9 岁',
     color: 'green',
     colorVar: 'var(--c-green)',
-    power: '自然魔法 · 蜻蜓翅膀杖',
-    bio: '9 岁,浅绿色长发,棕绿色眼睛,背后长着绿色大蜻蜓翅膀(像小精灵)。持浅绿心形杖。喜欢照顾各种小昆虫,经常给蜘蛛太太送信。',
+    power: '自然魔法 · 浅绿心形杖',
+    bio: '9 岁,浅绿色长发,棕绿色眼睛,背后长着透明的大蝴蝶翅膀(像小精灵),一扇"扑扑"响。持浅绿心形杖。喜欢照顾各种小昆虫,经常给蜘蛛太太送信。娃娃是小树叶(浅绿波波头、橙色小裙子、绣一片绿叶子)——睡了最久,其实早就醒了,每天半夜偷偷给主人盖叶子被子(见第十三集)。',
     portrait: '/assets/characters/小昆虫.png',
+    portraits: ['/assets/characters/小昆虫.png', '/assets/characters/小昆虫抱小树叶.png'],
     debut: '1-开学第一天',
   },
   {

@@ -206,6 +206,21 @@ export const episodes: Episode[] = [
     excerpt: '双胞胎莉莉和阳阳来了！他们的魔法一人只有一半，可是桌子把他俩拼到了教室两头——还好有太阳徽章暗号。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十二天。',
     charactersInScene: ['jingjing', 'liangliang', 'lili', 'yangyang', 'anyu', 'momo', 'diandian', 'xiaobaozi', 'xiaoman', 'xiaohaimian', 'xiaotianxin', 'xiaotiandian'],
+    next: { title: '第十三集 小树叶醒了', status: 'online', slug: '13-小树叶醒了' },
+  },
+  {
+    slug: '13-小树叶醒了',
+    number: 13,
+    title: '第十三集 小树叶醒了',
+    subtitle: '今天，换我们来照顾你',
+    duration: '约 15 分 25 秒',
+    status: 'online',
+    cover: '/assets/covers/第十三集.jpg',
+    audio: '/audio/13-小树叶醒了.mp3',
+    color: 'green',
+    excerpt: '小昆虫是照顾所有人的大姐姐，可她的小树叶睡了最久最久。蜘蛛太太来信了：请你们让大姐姐休息一天吧。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十三天。',
+    charactersInScene: ['jingjing', 'liangliang', 'xiaokunchong', 'anyu', 'momo', 'diandian', 'lili', 'yangyang', 'xiaobaozi'],
   },
 ];
 
