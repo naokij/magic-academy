@@ -221,6 +221,21 @@ export const episodes: Episode[] = [
     excerpt: '小昆虫是照顾所有人的大姐姐，可她的小树叶睡了最久最久。蜘蛛太太来信了：请你们让大姐姐休息一天吧。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十三天。',
     charactersInScene: ['jingjing', 'liangliang', 'xiaokunchong', 'anyu', 'momo', 'diandian', 'lili', 'yangyang', 'xiaobaozi'],
+    next: { title: '第十四集 两条小龙', status: 'online', slug: '14-两条小龙' },
+  },
+  {
+    slug: '14-两条小龙',
+    number: 14,
+    title: '第十四集 两条小龙',
+    subtitle: '龙走到哪里，家就在哪里',
+    duration: '约 15 分 44 秒',
+    status: 'online',
+    cover: '/assets/covers/第十四集.jpg',
+    audio: '/audio/14-两条小龙.mp3',
+    color: 'blue',
+    excerpt: '新同学敖丙从东海游来，是安雨的老乡。他嘴上说龙不会想家，可是那天夜里，海有一点点远。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十四天。',
+    charactersInScene: ['jingjing', 'liangliang', 'anyu', 'aobing', 'momo', 'xiaotianxin', 'xiaobaozi', 'xiaoman'],
   },
 ];
 
