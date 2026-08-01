@@ -236,6 +236,21 @@ export const episodes: Episode[] = [
     excerpt: '新同学敖丙从东海游来，是安雨的老乡。他嘴上说龙不会想家，可是那天夜里，海有一点点远。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十四天。',
     charactersInScene: ['jingjing', 'liangliang', 'anyu', 'aobing', 'momo', 'xiaotianxin', 'xiaobaozi', 'xiaoman'],
+    next: { title: '第十五集 小豆包的书包', status: 'online', slug: '15-小豆包的书包' },
+  },
+  {
+    slug: '15-小豆包的书包',
+    number: 15,
+    title: '第十五集 小豆包的书包',
+    subtitle: '准备了一百样，错了一样',
+    duration: '约 17 分 03 秒',
+    status: 'online',
+    cover: '/assets/covers/第十五集.jpg',
+    audio: '/audio/15-小豆包的书包.mp3',
+    color: 'violet',
+    excerpt: '六岁的新同学小豆包来啦，她的书包是百宝袋，谁缺什么她都有。可是她给自己准备的，好像一样都没有。',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十五天。',
+    charactersInScene: ['jingjing', 'liangliang', 'xiaodoubao', 'xiaotianxin', 'anyu', 'aobing', 'momo', 'diandian', 'lili', 'yangyang', 'xiaobaozi', 'xiaoman', 'xiaohaimian', 'xiaotiandian'],
   },
 ];
 
