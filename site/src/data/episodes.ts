@@ -7,6 +7,13 @@ import { characters } from './characters';
 
 export type EpisodeStatus = 'online' | 'soon';
 
+// 本集画面(情节插图):展示在故事页正文之后、「第N集完」之前的画廊
+export interface EpisodeIllustration {
+  src: string;          // 主图(翻页动画时是第 1 帧)
+  caption: string;      // 图注
+  frames?: string[];    // 翻页动画帧(≥2 张时快速来回切换)
+}
+
 export interface Episode {
   slug: string;
   number: number;
@@ -21,6 +28,7 @@ export interface Episode {
   excerpt: string;         // 列表卡片摘要（控制在一到两句话，避免卡片过高）
   intro: string;           // 故事开篇一句话
   charactersInScene: string[];   // 角色 id 数组
+  illustrations?: EpisodeIllustration[];  // 本集画面
   next?: { title: string; status: EpisodeStatus; slug: string };
 }
 
@@ -251,6 +259,28 @@ export const episodes: Episode[] = [
     excerpt: '六岁的新同学小豆包来啦，她的书包是百宝袋，谁缺什么她都有。可是她给自己准备的，好像一样都没有。',
     intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十五天。',
     charactersInScene: ['jingjing', 'liangliang', 'xiaodoubao', 'xiaotianxin', 'anyu', 'aobing', 'momo', 'diandian', 'lili', 'yangyang', 'xiaobaozi', 'xiaoman', 'xiaohaimian', 'xiaotiandian'],
+    next: { title: '第十六集 包包等不及了', status: 'online', slug: '16-包包等不及了' },
+  },
+  {
+    slug: '16-包包等不及了',
+    number: 16,
+    title: '第十六集 包包等不及了',
+    subtitle: '错的一样，也很好',
+    duration: '约 14 分 34 秒',
+    status: 'online',
+    cover: '/assets/covers/第十六集.jpg',
+    audio: '/audio/16-包包等不及了.mp3',
+    color: 'violet',
+    excerpt: '假期回来的第一天，小豆包的回礼全都包错了。清单明明没错呀——那是谁包的呢？',
+    intro: '我叫晶晶，今年四岁。今天是我在魔法学院上学的第十六天。',
+    charactersInScene: ['jingjing', 'liangliang', 'xiaodoubao', 'xiaotianxin', 'diandian', 'momo', 'anyu', 'aobing', 'xiaokunchong', 'xiaobaozi'],
+    illustrations: [
+      { src: '/assets/episodes/回到学院.jpg', caption: '什么都还在，只有第九间不一样' },
+      { src: '/assets/episodes/发错的礼物.jpg', caption: '"换换？""换换。"' },
+      { src: '/assets/episodes/心意魔法亮了.jpg', caption: '真心换真心的时候，它就会亮' },
+      { src: '/assets/episodes/包包醒了.jpg', caption: '包包等不及了' },
+      { src: '/assets/episodes/五个娃娃夜巡.jpg', caption: '醒来的娃娃，会找到醒来的娃娃' },
+    ],
   },
 ];
 

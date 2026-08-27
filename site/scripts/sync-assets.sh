@@ -38,6 +38,11 @@ rm -rf "$SITE_PUBLIC/assets/covers"
 mkdir -p "$SITE_PUBLIC/assets/covers"
 node "$SCRIPTS_DIR/resize-asset-copies.mjs" "$ASSETS_SRC/covers" "$SITE_PUBLIC/assets/covers" 1920
 
+# episodes(情节插图): 长边 ≤ 1920px
+rm -rf "$SITE_PUBLIC/assets/episodes"
+mkdir -p "$SITE_PUBLIC/assets/episodes"
+node "$SCRIPTS_DIR/resize-asset-copies.mjs" "$ASSETS_SRC/episodes" "$SITE_PUBLIC/assets/episodes" 1920
+
 # 2) 同步 fonts
 mkdir -p "$SITE_PUBLIC/fonts"
 cp -f "$FONTS_SRC"/*.ttf "$SITE_PUBLIC/fonts/" 2>/dev/null || echo "  ⚠️  仓库根 public/fonts 为空,跳过"
@@ -56,12 +61,14 @@ fi
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/characters" --widths=200,400,800 --quality=80 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/covers" --widths=400,800,1200 --quality=82 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/locations" --widths=400,800,1200 --quality=82 --ext=jpg
+node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/episodes" --widths=400,800,1200 --quality=82 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/banners" --widths=800,1600 --quality=80 --ext=jpg
 
 # 5) 派生 WebP
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/characters" --widths=200,400,800 --quality=80 --ext=webp
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/covers" --widths=400,800,1200 --quality=82 --ext=webp
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/locations" --widths=400,800,1200 --quality=82 --ext=webp
+node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/episodes" --widths=400,800,1200 --quality=82 --ext=webp
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/banners" --widths=800,1600 --quality=80 --ext=webp
 
 # 6) 生成资源内容 hash 映射表

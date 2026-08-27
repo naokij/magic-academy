@@ -139,6 +139,26 @@ if (annotated.length > 0) {
 const audioPath = path.resolve(process.cwd(), `../audio/${ep.slug}.mp3`);
 const hasAudio = fs.existsSync(audioPath);
 
+// 本集画面(情节插图):从 episodes.ts 读取,构建缩略图/lightbox 数据
+const illustrations = (ep.illustrations || []).map((ill) => {
+  const stripExt = (s: string) => s.replace(/\.(jpg|jpeg|png)$/i, '');
+  const frames = ill.frames && ill.frames.length > 1 ? ill.frames : [ill.src];
+  return {
+    caption: ill.caption,
+    thumb: assetUrl(`${stripExt(ill.src)}-400.webp`),
+    thumbSrcset: assetSrcset(`${stripExt(ill.src)}-400.webp 400w, ${stripExt(ill.src)}-800.webp 800w`),
+    framesFull: frames.map((f) => assetUrl(f)),
+    framesAnim: frames.map((f) => assetUrl(`${stripExt(f)}-800.webp`)),
+    animated: frames.length > 1,
+  };
+});
+
+const coverStem = ep.cover.replace(/\.(jpg|jpeg|png)$/i, '');
+const coverViewer = [
+  { caption: '封面', view: assetUrl(`${coverStem}-800.webp`), frames: [assetUrl(ep.cover)] },
+  ...illustrations.map((ill) => ({ caption: ill.caption, view: ill.framesAnim[0], frames: ill.framesFull })),
+];
+
 // 敲墙暗号数据(从原型精确移植)
 const wallCodes = [
   { n: '敲 1 下', text: '平安' },
@@ -157,7 +177,7 @@ const wallCodes = [
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
         <span>故事列表</span>
       </a>
-      <div class="story-cover">
+      <div class="story-cover" data-viewer={illustrations.length > 0 ? JSON.stringify(coverViewer) : undefined}>
         <ResponsiveImage
           src={ep.cover}
           alt={ep.title + '封面'}
@@ -175,6 +195,20 @@ const wallCodes = [
         <span class="sparkle s3" style="bottom: 22%; left: 22%; width: 8px; height: 8px; z-index: 3;">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
         </span>
+        {illustrations.length > 0 && (
+          <>
+            <button class="cover-nav cover-prev" id="cover-prev" aria-label="上一张画面">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="cover-nav cover-next" id="cover-next" aria-label="下一张画面">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+            <div class="cover-caption" aria-hidden="true">
+              <span class="cover-caption-text" id="cover-caption-text">封面</span>
+              <span class="cover-caption-idx" id="cover-caption-idx">1 / {coverViewer.length}</span>
+            </div>
+          </>
+        )}
       </div>
 
       <div class="audio-player" id="player-root" data-od-id="audio-player" data-state={hasAudio ? 'ready' : 'placeholder'}>
@@ -253,6 +287,31 @@ const wallCodes = [
         <div class="story-text" id="story-text" set:html={storyHtml} />
       )}
 
+      {illustrations.length > 0 && (
+        <section class="story-gallery" data-od-id="story-gallery">
+          <span class="eyebrow">本集画面</span>
+          <div class="gallery-strip">
+            {illustrations.map((ill) => (
+              <figure
+                class="gallery-item"
+                data-frames={JSON.stringify(ill.framesFull)}
+                data-frames-anim={JSON.stringify(ill.framesAnim)}
+                data-caption={ill.caption}
+              >
+                <img
+                  src={ill.thumb}
+                  srcset={ill.thumbSrcset}
+                  sizes="(max-width: 720px) 44vw, 300px"
+                  alt={ill.caption}
+                  loading="lazy"
+                />
+                <figcaption>{ill.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
       <div class="end-pill" data-od-id="end-pill">
         <span class="end-title">故事的第{['一','二','三','四','五','六','七','八','九','十'][ep.number - 1] || ep.number}集完</span>
         {ep.next ? (
@@ -285,6 +344,110 @@ const wallCodes = [
       </section>
     </article>
   </div>
+
+  {illustrations.length > 0 && (
+    <div class="modal-backdrop" id="gallery-modal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="gallery-modal-close" aria-label="关闭">×</button>
+        <div class="modal-img">
+          <img id="gallery-modal-img" alt="" />
+        </div>
+        <div class="modal-body">
+          <p id="gallery-modal-caption" style="margin: 0; text-align: center;"></p>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {illustrations.length > 0 && (
+    <script>
+      document.querySelectorAll('.gallery-item').forEach((item) => {
+        const frames = JSON.parse(item.getAttribute('data-frames-anim') || '[]');
+        if (frames.length < 2) return;
+        const img = item.querySelector('img');
+        if (!img) return;
+        img.removeAttribute('srcset');
+        frames.forEach((f) => { const pre = new Image(); pre.src = f; });
+        let i = 0;
+        setInterval(() => { i = (i + 1) % frames.length; img.src = frames[i]; }, 600);
+      });
+
+      const gModal = document.getElementById('gallery-modal');
+      const gImg = document.getElementById('gallery-modal-img') as HTMLImageElement | null;
+      const gCap = document.getElementById('gallery-modal-caption');
+      const gClose = document.getElementById('gallery-modal-close');
+      let gTimer: ReturnType<typeof setInterval> | null = null;
+      function stopGalleryAnim() {
+        if (gTimer) { clearInterval(gTimer); gTimer = null; }
+      }
+      function closeGalleryModal() {
+        stopGalleryAnim();
+        if (!gModal) return;
+        gModal.classList.remove('is-open');
+        gModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      function openGalleryModal(frames: string[], caption: string) {
+        if (!gModal || !gImg || frames.length === 0) return;
+        gImg.src = frames[0];
+        gImg.alt = caption;
+        if (gCap) gCap.textContent = caption;
+        stopGalleryAnim();
+        if (frames.length > 1) {
+          frames.forEach((f: string) => { const pre = new Image(); pre.src = f; });
+          let i = 0;
+          gTimer = setInterval(() => { i = (i + 1) % frames.length; gImg.src = frames[i]; }, 600);
+        }
+        gModal.classList.add('is-open');
+        gModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+      document.querySelectorAll('.gallery-item').forEach((item) => {
+        item.addEventListener('click', () => {
+          openGalleryModal(
+            JSON.parse(item.getAttribute('data-frames') || '[]'),
+            item.getAttribute('data-caption') || '',
+          );
+        });
+      });
+
+      const coverEl = document.querySelector('.story-cover') as HTMLElement | null;
+      interface CoverView { caption: string; view: string; frames: string[] }
+      const viewer: CoverView[] = JSON.parse(coverEl?.getAttribute('data-viewer') || '[]');
+      if (coverEl && viewer.length > 1) {
+        const cImg = coverEl.querySelector('img') as HTMLImageElement;
+        const cSource = coverEl.querySelector('source');
+        const cText = document.getElementById('cover-caption-text');
+        const cIdx = document.getElementById('cover-caption-idx');
+        let vi = 0;
+        let swapped = false;
+        function showCover(i: number) {
+          vi = (i + viewer.length) % viewer.length;
+          if (!swapped) {
+            swapped = true;
+            if (cSource) cSource.remove();
+            cImg.removeAttribute('srcset');
+            viewer.forEach((v) => { const pre = new Image(); pre.src = v.view; });
+          }
+          cImg.src = viewer[vi].view;
+          cImg.alt = viewer[vi].caption;
+          if (cText) cText.textContent = viewer[vi].caption;
+          if (cIdx) cIdx.textContent = `${vi + 1} / ${viewer.length}`;
+        }
+        const prevBtn = document.getElementById('cover-prev');
+        const nextBtn = document.getElementById('cover-next');
+        if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showCover(vi - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showCover(vi + 1); });
+        coverEl.addEventListener('click', () => {
+          if (window.matchMedia('(max-width: 900px)').matches) return;
+          openGalleryModal(viewer[vi].frames, viewer[vi].caption);
+        });
+      }
+      if (gClose) gClose.addEventListener('click', closeGalleryModal);
+      if (gModal) gModal.addEventListener('click', (e) => { if (e.target === gModal) closeGalleryModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGalleryModal(); });
+    </script>
+  )}
 
   {hasAudio && (
     <script>
