@@ -35,7 +35,7 @@ export const characters: Character[] = [
     power: '光魔法 · 变出小花和小光球',
     bio: '故事的第一人称讲述者,4 岁妹妹。金色蓬松短发扎双丸子头(白花球发卡),琥珀红大眼睛。穿浅绿色斗篷配米黄色连衣裙,喜欢说"我来我来!"和"哇——"。口头禅"嘿嘿",喜欢和姐姐跳舞画画。她有一只全黑的玩偶猫叫黑黑,会"躲猫猫"魔法。第十一集,三岁的新同学点点拼到她旁边做同桌,她第一次当起了"姐姐"——忍住不抢著帮忙,看点点自己放碗、自己摘甜甜圈。第十五集,她的口头禅"我来我来!"终于派上了用场:给跟着自己画错的地图迷路的小豆包带路去食堂;第二天,她把自己画的新地图(食堂和花园都在对的地方)放进小豆包的书包,是全班礼物里最特别的一份。',
     portrait: '/assets/characters/晶晶妹妹.png',
-    portraits: ['/assets/characters/晶晶妹妹.png', '/assets/characters/晶晶抱黑黑.png'],
+    portraits: ['/assets/characters/晶晶妹妹.png', '/assets/characters/晶晶抱黑黑.png', '/assets/episodes/回到学院.jpg', '/assets/covers/第一集.jpg', '/assets/covers/第二集.jpg', '/assets/covers/第九集.jpg', '/assets/covers/第十集.jpg'],
     debut: '1-开学第一天',
   },
   {
@@ -50,7 +50,7 @@ export const characters: Character[] = [
     power: '云朵魔法 · 变出棉花糖一样的小云',
     bio: '晶晶的姐姐,温柔稳重,5 岁。金色中短发,翠绿色大眼睛,头顶小蝴蝶结。穿深蓝色英伦学院风制服(深蓝外套 + 蓝白格纹裙 + 白星辰披风 + 棕靴),手持金色星星法杖(杖顶还有水晶球和小挎包)。口头禅"晶晶,跟着姐姐!"。她有一只三花玩偶猫叫奶 ki,会"变软变漂亮"魔法。',
     portrait: '/assets/characters/亮亮姐姐.png',
-    portraits: ['/assets/characters/亮亮姐姐.png', '/assets/characters/亮亮抱奶ki.png'],
+    portraits: ['/assets/characters/亮亮姐姐.png', '/assets/characters/亮亮抱奶ki.png', '/assets/episodes/回到学院.jpg', '/assets/covers/第一集.jpg', '/assets/covers/第二集.jpg', '/assets/covers/第九集.jpg', '/assets/covers/第十集.jpg'],
     debut: '1-开学第一天',
   },
 
@@ -95,6 +95,7 @@ export const characters: Character[] = [
     power: '光魔法 · 太阳金球杖',
     bio: '8 岁优等生,金黄色头发戴小皇冠,金琥珀眼睛。穿白色斗篷,持太阳金球杖。喜欢和小暗暗一起恶作剧,但从来不欺负小朋友。和小太阳关系很好。',
     portrait: '/assets/characters/小光明优等生.png',
+    portraits: ['/assets/characters/小光明优等生.png', '/assets/covers/第七集.jpg'],
     debut: '1-开学第一天',
   },
   {
@@ -125,7 +126,7 @@ export const characters: Character[] = [
     power: '石头魔法 · 茉莉朵朵开 · 石头魔杖',
     bio: '4 岁初级生,第四集登场的新同学,晶晶的新同桌。紫罗兰色双马尾卷发,琥珀色大眼睛,穿深绿色斗篷配绿格裙。第一天入学想家,一整天不敢说话,被小甜心偷吃甜甜圈逗笑。小包子老师送的石头魔杖原本灰灰的"在睡觉",第六集在花园里和安雨的龙珠魔杖一起醒了,亮成淡淡的茉莉色——但"魔法是什么",她和安雨约定自己想一想。第九集终于揭晓:茉莉朵朵开!茉茉说出真心的话,石头缝里就会开出白白的、发着茉莉色光的茉莉花,一句一朵,魔杖只认她自己的声音;那句最大声的"魔法学院,也是茉茉的家!",让整条石子路的花数都数不过来。她的独角兽玩偶小彩虹(白身子、粉卷毛、金角)在第十集醒了——原来它睡够了、认出了这里是家。小彩虹害羞又调皮:有人看就一动不动装玩偶,没人看就偷吃甜甜圈;开心的时候金角会掉"梦粉",沾到梦粉的人,今晚会做一个甜甜的好梦。',
     portrait: '/assets/characters/茉茉.png',
-    portraits: ['/assets/characters/茉茉.png', '/assets/characters/茉茉抱小彩虹.png', '/assets/characters/安雨和茉茉魔杖醒了.jpg'],
+    portraits: ['/assets/characters/茉茉.png', '/assets/characters/茉茉抱小彩虹.png', '/assets/characters/安雨和茉茉魔杖醒了.jpg', '/assets/covers/第四集.jpg', '/assets/covers/第六集.jpg', '/assets/covers/第九集.jpg', '/assets/covers/第十集.jpg'],
     debut: '4-新同学茉茉',
   },
   {
@@ -140,7 +141,7 @@ export const characters: Character[] = [
     power: '龙族魔法 · 龙珠魔杖(可变红色小笛子) + 龙族展翅',
     bio: '5 岁初级生,第五集登场的新同学,小太阳的同桌。红棕色卷卷双马尾,头上有两只金色小龙角,红色斗篷配龙鳞裙,身后拖着长长的龙尾巴(尾巴尖有金色的鳍)。说话一板一眼,做事严谨认真——"上学,不可以迟到。"擅长龙族展翅:红金色半透明的光之龙翼,展开时像两片会发光的晚霞。小包子老师送的龙珠魔杖(金色龙首含珠)原本一直在"睡觉",第六集和茉茉的石头魔杖一起醒了,龙嘴里的珠子亮成红色,认出这里是新家了。第八集音乐课上,魔杖"咔"地变成一支红色小笛子——只有吹出真心的音乐,周围的东西才会跟着动起来:喷泉跳舞、影子排队转圈;那首歪歪的龙族摇篮曲里,吹错的音反而最好听。她的龙女娃娃叫小红豆,是迷你版的她。房间在晶晶的另一边隔壁,敲墙暗号学得特别认真,还会主动发起"平安"接力。第十四集,老乡敖丙从东海来了——夜里敖丙想家,安雨陪他在走廊坐了一整夜,第一次没有去晨读;一直在睡的小红豆等主人终于停下来,敢醒了(醒来的第一个动作,是把安雨滑掉的斗篷角拉上来盖好)。现在小红豆和小绿豆手拉手,跟着小彩虹在夜里散步。"龙走到哪里,家就在哪里。"',
     portrait: '/assets/characters/安雨.jpg',
-    portraits: ['/assets/characters/安雨.jpg', '/assets/characters/安雨抱小红豆.jpg', '/assets/characters/安雨和茉茉魔杖醒了.jpg', '/assets/characters/安雨和敖丙在走廊.jpg'],
+    portraits: ['/assets/characters/安雨.jpg', '/assets/characters/安雨抱小红豆.jpg', '/assets/characters/安雨和茉茉魔杖醒了.jpg', '/assets/characters/安雨和敖丙在走廊.jpg', '/assets/covers/第五集.jpg', '/assets/covers/第六集.jpg', '/assets/covers/第八集.jpg', '/assets/covers/第九集.jpg', '/assets/covers/第十集.jpg', '/assets/covers/第十四集.jpg'],
     debut: '5-新同学安雨',
   },
   {
@@ -155,7 +156,7 @@ export const characters: Character[] = [
     power: '点点光 · 浅蓝星星小杖',
     bio: '3 岁,第十一集登场的新同学,魔法学院最小最小的学生,晶晶的新同桌。银蓝色短发扎一个小辫子,蓝色大眼睛,穿白斗篷配蓝格裙,自带一根浅蓝星星小杖。口头禅"点点。自己来。"第一天上学,从校门到教室走了一个小时——对三岁的小朋友来说,这条走廊太长太长啦。她的魔法是"漏"出来的:开心的时候、喜欢谁的时候,杖尖会冒出浅蓝色的小光点,沾到谁的鼻子上——被点点点到的人,就是点点喜欢的人。她的玩偶是白猫甜甜(耳朵、爪子、尾巴带彩虹色),还在睡觉。房间在茉茉隔壁,是一排宿舍的第五间;她敲墙是数不清的好多好多下——意思是"点点很开心"。',
     portrait: '/assets/characters/点点.png',
-    portraits: ['/assets/characters/点点.png', '/assets/characters/点点抱甜甜.png'],
+    portraits: ['/assets/characters/点点.png', '/assets/characters/点点抱甜甜.png', '/assets/covers/第十一集.jpg', '/assets/episodes/发错的礼物.jpg'],
     debut: '11-魔法学院的小不点',
   },
   {
@@ -170,7 +171,7 @@ export const characters: Character[] = [
     power: '双胞胎魔法(小黄花魔杖) · 太阳徽章暗号',
     bio: '5 岁初级生,第十二集登场的新同学,双胞胎里的姐姐——只比弟弟阳阳大三分钟,可是当姐姐当得特别认真:"三分钟,也是姐姐。"浅金色头发扎侧边麻花辫,辫上别一朵小黄花,穿薄荷绿星星斗篷配格子裙,背着白色小挎包。她的魔法和阳阳是长在一起的:一个人只有一半,两个人靠近,魔杖才会亮;她的小黄花魔杖负责"开花",阳阳的小太阳魔杖负责"照亮"。姐弟俩有太阳徽章暗号:碰一下是"我在这里",碰两下是"我想你了"。大家都以为是阳阳离不开她,其实——是她先想弟弟的。她的娃娃叫小小莉,是穿黄裙子的迷你版她。房间在一排宿舍的第六间,点点的隔壁。',
     portrait: '/assets/characters/莉莉.png',
-    portraits: ['/assets/characters/莉莉.png', '/assets/characters/莉莉抱小小莉.png'],
+    portraits: ['/assets/characters/莉莉.png', '/assets/characters/莉莉抱小小莉.png', '/assets/covers/第十二集.jpg'],
     debut: '12-双胞胎来了',
   },
   {
@@ -185,7 +186,7 @@ export const characters: Character[] = [
     power: '双胞胎魔法(小太阳魔杖) · 太阳徽章暗号',
     bio: '5 岁初级生,第十二集登场的新同学,双胞胎里的弟弟,比姐姐莉莉晚出生三分钟。浅金色短发,穿薄荷绿星星斗篷配白衬衫和黄短裤,笑起来眼睛弯弯的,一进门就冲大家挥手。他的魔法和莉莉是长在一起的:一个人只有一半,两个人靠近,魔杖才会亮;他的小太阳魔杖负责"照亮",莉莉的小黄花魔杖负责"开花"。第一天上学,桌子把他和姐姐拼到了教室两头——双胞胎第一次分开坐。在徽章暗号的鼓励下,他第一次不用姐姐代说"我们",自己开口向小海绵阿姨添了粥:"阿姨!我!还要添粥!"他的玩偶叫小小阳,是围着绿围巾的迷你版他。房间在一排宿舍的第七间,莉莉的隔壁。',
     portrait: '/assets/characters/阳阳.png',
-    portraits: ['/assets/characters/阳阳.png', '/assets/characters/阳阳抱小小阳.png'],
+    portraits: ['/assets/characters/阳阳.png', '/assets/characters/阳阳抱小小阳.png', '/assets/covers/第十二集.jpg'],
     debut: '12-双胞胎来了',
   },
   {
@@ -200,7 +201,7 @@ export const characters: Character[] = [
     power: '龙族魔法 · 海浪魔杖(不用睡觉的旅伴魔杖)',
     bio: '5 岁初级生,第十四集登场的新同学——班里第二个男孩子(第一个是阳阳),安雨的老乡。蓝蓝的长头发,头顶两只小龙角,穿蓝白色长袍,身后拖着长长的龙尾巴(尾巴尖是蓝紫色的,像一小片傍晚的海)。从很远很远的东海龙宫来:跟信一起出发,自己游过来的——"信比我快。"说话轻轻的,先鞠躬再说话,尾音带一个软软的"哦";安静,但会冷不丁开玩笑("我会告诉老师的。……开玩笑的哦。"),他的影子比他还有礼貌,会先鞠躬。他的海浪魔杖蓝白色的、弯弯的,像一小截冻住的海浪,顶上浅蓝色珠子——从东海起就一直醒着,是陪他游远路的旅伴;和安雨的龙珠魔杖一见面,两颗珠子就一起亮了:"魔杖,认出了老乡。"他的娃娃叫小绿豆(浅蓝头发、头顶银色小龙、龙鳞小裙),在东海就醒了,从来没有睡过。第一天夜里,他嘴上说"龙走到哪里,海就在哪里",可是海有一点点远——安雨陪他在走廊坐了一整夜;第二天清晨,安雨的小红豆终于敢醒了。敖丙说,安雨"比龙族的长老,说得还好哦"。现在他住一排宿舍的第八间,晚安时用龙语说"呜——",像很远很远的海。',
     portrait: '/assets/characters/敖丙抱小绿豆.jpg',
-    portraits: ['/assets/characters/敖丙抱小绿豆.jpg', '/assets/characters/安雨和敖丙在走廊.jpg'],
+    portraits: ['/assets/characters/敖丙抱小绿豆.jpg', '/assets/characters/安雨和敖丙在走廊.jpg', '/assets/covers/第十四集.jpg'],
     debut: '14-两条小龙',
   },
   {
@@ -215,7 +216,7 @@ export const characters: Character[] = [
     power: '心意魔法 · 小心心魔杖(真心换真心的时候会亮)',
     bio: '6 岁,第十五集登场的新同学——以前的新同学最大才五岁,她是第一个"大姐姐"新同学,小甜心的同桌(桌子连谁一样大,都知道)。**她是小包子老师的女儿**——想当一个普普通通的新同学,拜托妈妈先保密;结果第二天收到全班装满书包的礼物,太开心,一句"妈妈!你看!"自己说漏了嘴("这下,不用保密啦")。淡紫色大尖帽,米白斗篷校服,背着双肩书包还斜挎一个小包包,自带一根杖头是黄黄小心心的魔杖。她坐第一班魔法船来,行李只有一个书包——"我自己都装好啦!"她的书包是百宝袋:卷笔刀、针线包、小别针,谁缺什么,她就掏得出什么。她从小听妈妈讲学校的事,提前把学校的样子问清楚,自己画了一张学院地图——可是第一天就发现,食堂和花园,画反啦!"问是问清楚了,画,没画清楚。""准备了一百样,错了一样。"她总是给大家准备东西,却没有给自己准备什么;第二天,全班一人往她书包里放了一样礼物,其中有晶晶亲手画的新地图。她是第一个给影子回礼的新同学。第十六集:放假回学院,她给全班准备回礼,结果包错了三样——原来是包包夜里偷偷帮她包的(布手做的,软软的,蝴蝶结打得歪歪的)。她想"今晚重新包",被全班一起喊"不要——";她第一次什么都没有准备,就收下了小甜心掰给她的半块饼干,小心心魔杖"扑通扑通"跳了两下,亮了——心意魔法揭晓:"真心换真心的时候,它就会亮。"她的娃娃叫包包(棕色双麻花辫、白底碎花连衣裙)——第一个等不及主人停下来、想帮忙想着想着就自己醒了的娃娃;包包把她画反的那张旧地图,折成了一颗纸心心送给她:"错的一样,是包包最喜欢的。"房间在一排宿舍的第九间,敲墙回"咚咚咚"三下——意思是"晚安晚安晚安"。',
     portrait: '/assets/characters/小豆包.png',
-    portraits: ['/assets/characters/小豆包.png', '/assets/characters/小豆包抱着包包.jpg', '/assets/covers/第十六集.jpg'],
+    portraits: ['/assets/characters/小豆包.png', '/assets/characters/小豆包抱着包包.jpg', '/assets/covers/第十五集.jpg', '/assets/covers/第十六集.jpg', '/assets/episodes/心意魔法亮了.jpg', '/assets/episodes/包包醒了.jpg'],
     debut: '15-小豆包的书包',
   },
   {
@@ -244,7 +245,7 @@ export const characters: Character[] = [
     power: '甜点魔法 · 心形粉色杖',
     bio: '6 岁,晶晶的另一个同桌。粉红色头发 + 奶黄色衣服,玫红色眼睛。持心形粉色杖。最喜欢偷偷吃甜食,但总是被小包子老师发现;每个新同学都会收到她偷偷塞的一块小饼干:"给你吃。你别告诉老师哦。"——直到第十五集,新同桌小豆包先把一块饼干递到了她面前,她愣了半天,把饼干掰成两半回礼:"一人一半。"这是她第一次收到别人的饼干。和小玫瑰玩装扮游戏。她的甜心娃娃是季节调色魔法的伙伴——一滴眼泪就会让春天褪色成秋天。',
     portrait: '/assets/characters/小甜心.png',
-    portraits: ['/assets/characters/小甜心.png', '/assets/characters/小甜心抱甜心娃娃.png'],
+    portraits: ['/assets/characters/小甜心.png', '/assets/characters/小甜心抱甜心娃娃.png', '/assets/covers/第三集.jpg', '/assets/episodes/心意魔法亮了.jpg', '/assets/episodes/发错的礼物.jpg'],
     debut: '1-开学第一天',
   },
   {
@@ -329,7 +330,7 @@ export const characters: Character[] = [
     power: '天气魔法 · 浅蓝心形杖',
     bio: '9 岁,浅蓝色长卷发,戴粉玫瑰花饰,蓝色眼睛。穿浅蓝色外套。亮亮的另一同桌。喜欢和小海洋比谁的衣服更蓝。她的晴天娃娃是天气魔法的伙伴——找不到娃娃就会一直下雨。',
     portrait: '/assets/characters/小天天.png',
-    portraits: ['/assets/characters/小天天.png', '/assets/characters/小天天拿晴天娃娃.png'],
+    portraits: ['/assets/characters/小天天.png', '/assets/characters/小天天拿晴天娃娃.png', '/assets/covers/第二集.jpg'],
     debut: '2-晴天娃娃不见了',
   },
   {
@@ -344,7 +345,7 @@ export const characters: Character[] = [
     power: '自然魔法 · 浅绿心形杖',
     bio: '9 岁,浅绿色长发,棕绿色眼睛,背后长着透明的大蝴蝶翅膀(像小精灵),一扇"扑扑"响。持浅绿心形杖。喜欢照顾各种小昆虫,经常给蜘蛛太太送信。娃娃是小树叶(浅绿波波头、橙色小裙子、绣一片绿叶子)——睡了最久,其实早就醒了,每天半夜偷偷给主人盖叶子被子(见第十三集)。',
     portrait: '/assets/characters/小昆虫.png',
-    portraits: ['/assets/characters/小昆虫.png', '/assets/characters/小昆虫抱小树叶.png'],
+    portraits: ['/assets/characters/小昆虫.png', '/assets/characters/小昆虫抱小树叶.png', '/assets/covers/第十三集.jpg'],
     debut: '1-开学第一天',
   },
   {
@@ -359,7 +360,7 @@ export const characters: Character[] = [
     power: '光魔法 · 太阳心形杖',
     bio: '9 岁,橙金色双马尾,金橙色眼睛,身上有彩虹徽章和彩虹鞋带。持太阳心形杖。喜欢跟小光明在一起,喜欢跟小光明比谁的衣服更黄。',
     portrait: '/assets/characters/小太阳.png',
-    portraits: ['/assets/characters/小太阳.png', '/assets/characters/小太阳抱太阳娃娃.jpg'],
+    portraits: ['/assets/characters/小太阳.png', '/assets/characters/小太阳抱太阳娃娃.jpg', '/assets/covers/第七集.jpg'],
     debut: '1-开学第一天',
   },
 
@@ -376,6 +377,7 @@ export const characters: Character[] = [
     power: '魔法入门课教学',
     bio: '学院班主任。粉色长发扎成高高马尾,表情柔和,笑起来很温柔。穿紫白色长袍,手持教鞭和魔法书。最爱给小甜心改作业(因为作业本上总有饼干渣)。第十五集揭晓:新同学小豆包是她的女儿——"你看。我们,是一个蒸笼里出来的哦。"女儿上学第一天拜托她保密,她答应了,还故意装作什么都不知道;夜里,她会去宿舍给女儿盖被子。第十六集:女儿的小心心魔杖亮了(心意魔法——"真心换真心的时候,它就会亮"),她早就知道会有这一天,"老师等它亮,等了好几天啦"。名字来源:女儿小橘子喜欢的豆包 App。',
     portrait: '/assets/characters/小包子老师.png',
+    portraits: ['/assets/characters/小包子老师.png', '/assets/covers/第一集.jpg', '/assets/covers/第四集.jpg', '/assets/covers/第五集.jpg', '/assets/covers/第十一集.jpg', '/assets/episodes/包包醒了.jpg'],
     debut: '1-开学第一天',
   },
   {
