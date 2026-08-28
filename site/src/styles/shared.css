@@ -724,10 +724,27 @@ main {
   font-family: var(--font-display);
 }
 
-
-/* ============================================================
-   人物图鉴
-   ============================================================ */
+/* 故事列表翻页 */
+.pagination {
+  display: flex; justify-content: center; align-items: center; flex-wrap: wrap;
+  gap: 10px; margin-top: 32px;
+}
+.pagination:empty { display: none; }
+.page-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; height: 44px; padding: 0 16px;
+  border-radius: 999px;
+  font-family: var(--font-display); font-size: 16px; font-weight: 600;
+  background: var(--surface); color: var(--fg);
+  border: 2px solid var(--border); box-shadow: var(--shadow-card);
+  cursor: pointer; transition: all 0.15s ease;
+}
+.page-btn:hover:not(:disabled):not(.is-current) { transform: translateY(-2px); box-shadow: var(--shadow-float); }
+.page-btn.is-current {
+  background: var(--accent); border-color: oklch(65% 0.12 75); color: oklch(20% 0.04 75);
+  cursor: default;
+}
+.page-btn:disabled { opacity: 0.45; cursor: default; box-shadow: none; }
 .character-card {
   background: var(--surface);
   border-radius: var(--r-lg);
